@@ -11,6 +11,7 @@
           args="/turtle1" name="turtle1_tf_broadcaster" />
     <node pkg="learning_tf" type="turtle_tf_boardcast_learning"
           args="/turtle2" name="turtle2_tf_broadcaster" />
+    <!-- 注释掉下面这行有助于理解变换发布和监听 -->
     <node pkg="learning_tf" type="turtle_tf_listen_learning"
           name="listener"  />
   </launch>
