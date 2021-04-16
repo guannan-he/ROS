@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/opt/ros/kinetic/include/**",
+        "/usr/include/**",
+        "~/catkin_ws/devel/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}
