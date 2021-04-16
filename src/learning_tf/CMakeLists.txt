@@ -137,6 +137,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/learning_tf_node.cpp)
 add_executable(turtle_tf_boardcast_learning src/turtle_tf_boardcast_learning.cpp)
 add_executable(turtle_tf_listen_learning src/turtle_tf_listen_learning.cpp)
+add_executable(carrot_tf_frame_broadcast src/carrot_tf_frame_broadcast.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,11 +150,13 @@ add_executable(turtle_tf_listen_learning src/turtle_tf_listen_learning.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(turtle_tf_boardcast_learning ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(turtle_tf_listen_learning ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(carrot_tf_frame_broadcast ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 target_link_libraries(turtle_tf_boardcast_learning ${catkin_LIBRARIES})
 target_link_libraries(turtle_tf_listen_learning ${catkin_LIBRARIES})
+target_link_libraries(carrot_tf_frame_broadcast ${catkin_LIBRARIES})
 
 #############
 ## Install ##

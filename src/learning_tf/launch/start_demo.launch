@@ -12,6 +12,18 @@
     <node pkg="learning_tf" type="turtle_tf_boardcast_learning"
           args="/turtle2" name="turtle2_tf_broadcaster" />
     <!-- 注释掉下面这行有助于理解变换发布和监听 -->
+    <!-- 把args换成 turtle1或者carrot1实现不同目标追踪 -->
     <node pkg="learning_tf" type="turtle_tf_listen_learning"
-          name="listener"  />
+          args="carrot1" name="listener"  />
+    <!-- 运行carrot节点, args == 1 时是固定节点 -->
+    <node pkg="learning_tf" type="carrot_tf_frame_broadcast"
+          args = "0" name="carrot_broadcaster"  />
+
+
+
+    <!-- 监控TF树和节点通信 -->
+    <node pkg="rqt_graph" type="rqt_graph"
+          name="rqt_graph_viewer"  />
+    <node pkg="rqt_tf_tree" type="rqt_tf_tree"
+          name="rqt_tf_tree_viewer"  />
   </launch>

@@ -3,8 +3,15 @@
 #include <turtlesim/Spawn.h>
 #include <geometry_msgs/Twist.h>
 
+std::string chasingObj;
+
 int main(int argc, char* argv[]){
     ros::init(argc, argv, "liaten_turtle");
+    if(argc != 2){
+        ROS_ERROR("specify name");
+        return -1;
+    }
+    chasingObj = argv[1];
     ros::NodeHandle handler;
     // 新建二号乌龟，此时turtle2发布的pose被t2broadcast订阅，并发布turtle2相对于world的变换
     ros::service::waitForService("spawn");
@@ -21,8 +28,8 @@ int main(int argc, char* argv[]){
         // try-catch, 防止在二号乌龟生成前无法获取二号乌龟的变换
         try{
             // target& source frameID
-            // 根据turtle1-world和turtle2-world的变换计算turtle2-turtle1的变换
-            lsnr.lookupTransform("turtle2", "turtle1", ros::Time(0), stmpTF);
+            // 根据chasingObj-world和turtle2-world的变换计算turtle2-chasingObj的变换
+            lsnr.lookupTransform("turtle2", chasingObj, ros::Time(0), stmpTF);
         }
         catch (tf::TransformException& err){
             ROS_ERROR("%s", err.what());
@@ -30,6 +37,7 @@ int main(int argc, char* argv[]){
             continue;
         }
         geometry_msgs::Twist velMsg;
+        // 控制指令发送到tuetle2的速度控制中，transform节点只负责订阅与发布变换
         velMsg.angular.z = 4.0 * atan2(stmpTF.getOrigin().y(), stmpTF.getOrigin().x());
         velMsg.linear.x = 0.5 * sqrt(pow(stmpTF.getOrigin().x(), 2) + pow(stmpTF.getOrigin().y(), 2));
         turtleVel.publish(velMsg);

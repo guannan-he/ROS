@@ -21,6 +21,7 @@ void poseCallback(const turtlesim::PoseConstPtr& msg){
 }
 
 int main(int argc, char* argv[]){
+    // 不在launch文件中指定node名称，就用下面的默认名称
     ros::init(argc, argv, "broadcast_turtle");
     if(argc != 2){
         ROS_ERROR("specify name");
