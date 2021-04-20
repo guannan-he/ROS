@@ -1,0 +1,43 @@
+<launch>
+    <!-- <node 
+        name = "avgFeedBackTopic"
+        pkg = "rostopic"
+        type = "rostopic"
+        args = "echo /avgActionServer/feedback"
+        output = "screen"
+    /> -->
+    <!-- <node 
+        name = "avgSubTopic"
+        pkg = "rostopic"
+        type = "rostopic"
+        args = "echo /randomNumber"
+        output = "screen"
+    /> -->
+    <node
+        pkg = "action_server_client"
+        type = "action_server_avg"
+        name = "avgActionServer"
+        output = "screen"
+    />
+    <!-- 抓取点数量 -->
+    <node
+        pkg = "action_server_client"
+        type = "action_client_avg"
+        name = "avgActionClient"
+        output = "screen"
+        args = "20"
+    />
+    <!-- 刷新频率, maxVal -->
+    <node
+        pkg = "action_server_client"
+        type = "random_number_gen"
+        name = "randNumGen"
+        args = "5.0 20"
+    />
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "connectionGraph"
+        output = "screen"
+    />
+</launch>

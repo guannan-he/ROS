@@ -1,0 +1,28 @@
+<launch>
+    <node 
+        name = "fibonFeedBackTopic"
+        pkg = "rostopic"
+        type = "rostopic"
+        args = "echo /fibonAction/feedback"
+        output = "screen"
+    />
+    <node
+        pkg = "action_server_client"
+        type = "action_server_fib"
+        name = "fibActionServer"
+        args = "1.0"
+    />
+    <!-- 刷新频率 -->
+    <node
+        pkg = "action_server_client"
+        type = "action_client_fib"
+        name = "fibActionClient"
+        args = "20"
+    />
+    <!-- 求和个数 -->
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "connectionGraph"
+    />
+</launch>
