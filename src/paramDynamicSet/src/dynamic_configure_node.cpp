@@ -26,7 +26,16 @@ public:
         strClient = handler.serviceClient<paramDynamicSet::service_string>("string_service_channel");
         boolClient = handler.serviceClient<paramDynamicSet::service_bool>("bool_service_channel");
         enumClient = handler.serviceClient<paramDynamicSet::service_enum>("enum_service_channel");
+        // https://blog.csdn.net/yaked/article/details/44942773
         // 得加上this指针才能使用, callback得用类名
+        // boost::bind(&NodeExample::configCallback, node_example, _1, _2)
+        // boost::bind(&类名::函数名, 类指针, _*....._*), 有几个参数使用几个占位
+        // node_example -> configCallback(x, y)
+        // boost::bind(&MyNode::doneCb, this, _1, _2)
+        // this -> doneCb(x, y) 
+        // 等效于类指针->回调函数(_*....._*)
+        // bind(&X::f, &x, _1)(i);		//(&x)->f(i)
+        // 第一个参数必须是可调用对象
         func = boost::bind(&callbackClass::callback, this, _1, _2);
         server.setCallback(func);
         ROS_INFO("spinning node");
