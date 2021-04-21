@@ -26,6 +26,13 @@ public:
         strClient = handler.serviceClient<paramDynamicSet::service_string>("string_service_channel");
         boolClient = handler.serviceClient<paramDynamicSet::service_bool>("bool_service_channel");
         enumClient = handler.serviceClient<paramDynamicSet::service_enum>("enum_service_channel");
+        // 等待服务, 必须在定义回调之前运行,否则会失败
+        ROS_INFO("waiting for services");
+        intClient.waitForExistence();
+        floatClient.waitForExistence();
+        strClient.waitForExistence();
+        boolClient.waitForExistence();
+        enumClient.waitForExistence();
         // https://blog.csdn.net/yaked/article/details/44942773
         // 得加上this指针才能使用, callback得用类名
         // boost::bind(&NodeExample::configCallback, node_example, _1, _2)
