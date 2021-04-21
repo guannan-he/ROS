@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  dynamic_reconfigure
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,12 +55,15 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message2.msg
 # )
 
-## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+# Generate services in the 'srv' folder
+add_service_files(
+  FILES
+  service_int.srv
+  service_float.srv
+  service_string.srv
+  service_bool.srv
+  service_enum.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -67,11 +72,11 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action2.action
 # )
 
-## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+# Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -88,10 +93,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  cfg/paramDynamicSetPY.cfg
+  # cfg/DynReconf2.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -105,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES paramDynamicSet
- CATKIN_DEPENDS roscpp rospy std_msgs
+ CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -134,7 +139,10 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/paramDynamicSet_node.cpp)
-add_executable(myParamDynamicSet src/myParamDynamicSet.cpp)
+# add_executable(${PROJECT_NAME}_node src/paramDynamicSet_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/paramDynamicSet_node.cpp)
+add_executable(dynamic_configure_node src/dynamic_configure_node.cpp)
+add_executable(myParamDynamicSetCallServer src/myParamDynamicSetCallServer.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,11 +153,17 @@ add_executable(myParamDynamicSet src/myParamDynamicSet.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(myParamDynamicSet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dynamic_configure_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(myParamDynamicSetCallServer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
-target_link_libraries(myParamDynamicSet ${catkin_LIBRARIES})
+# target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
+# target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
+target_link_libraries(dynamic_configure_node ${catkin_LIBRARIES})
+target_link_libraries(myParamDynamicSetCallServer ${catkin_LIBRARIES})
 
 #############
 ## Install ##
