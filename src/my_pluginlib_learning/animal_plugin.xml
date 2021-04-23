@@ -1,0 +1,22 @@
+<!-- 第二步,告诉ros系统如何定义plugin -->
+<!-- 插件名称到此为止无用, 接下来全靠描述文件 -->
+<library path = "lib/libanimal_plugin">
+    <class type = "walkingAnimals::cat" base_class_type = "baseAnimal::canRun">
+        <description>Cat class from walking animals.</description>
+    </class>
+    <class type = "walkingAnimals::dog" base_class_type = "baseAnimal::canRun">
+        <description>Dog class from walking animals.</description>
+    </class>
+    <class type = "swimingAnimals::fish" base_class_type = "baseAnimal::canSwim">
+        <description>Fish class from walking animals.</description>
+    </class>
+    <class type = "swimingAnimals::duck" base_class_type = "baseAnimal::canSwim">
+        <description>Duck class from walking animals.</description>
+    </class>
+    <class type = "flyingAnimals::pigeon" base_class_type = "baseAnimal::canFly">
+        <description>Pigeon class from walking animals.</description>
+    </class>
+    <class type = "flyingAnimals::eagle" base_class_type = "baseAnimal::canFly">
+        <description>Eagle class from walking animals.</description>
+    </class>
+</library>
