@@ -1,0 +1,12 @@
+<launch>
+    <param name = "can_run_animal" value = "walkingAnimals::cat" />
+    <param name = "can_fly_animal" value = "flyingAnimals::pigeon" />
+    <param name = "can_swim_animal" value = "swimingAnimals::fish" />
+    <!-- <param name = "can_swim_animal" value = "swimingAnimals::cock" /> -->
+    <node
+        pkg = "my_pluginlib_learning"
+        type = "plugin_caller"
+        name = "plugin_caller_node"
+        output = "screen"
+    />
+</launch>
