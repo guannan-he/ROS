@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <pluginlib/class_loader.h>
 #include <my_pluginlib_learning/base_animal.h>
 #include <boost/shared_ptr.hpp>
@@ -8,6 +9,9 @@ template <class T> class growInstance{
     boost::shared_ptr<T> instancePtr_;
     bool avail_ = false;// 判断是否称该加载实例
     growInstance(std::string pkgName, std::string baseName, std::string instanceName){
+        // std::string pkgName_;
+        // ros::package::getPath(pkgName_);
+        // ROS_INFO("%s", pkgName_.c_str());
         baseClassLoader_ = new pluginlib::ClassLoader<T>(pkgName.c_str(), baseName.c_str());
         try{
             instancePtr_ = baseClassLoader_->createInstance(instanceName);
@@ -20,19 +24,20 @@ template <class T> class growInstance{
         return;
     }
     ~growInstance(){
-        // 同时为了避免内存泄漏，要reset实例, 同时防止删除baseClassLoader_, 产生下面的报错
+        // 干掉loader前要先干掉实例，否则报错
+        // SEVERE WARNING!!! 
+        // Attempting to unload library while objects created by 
+        // this loader exist in the heap! You should delete your objects 
+        // before attempting to unload the library or destroying the ClassLoader. 
+        // The library will NOT be unloaded.
+        ROS_INFO("%s: deleted.", instancePtr_->getName().c_str());
         instancePtr_.reset();
         delete baseClassLoader_;
         return;
     }
     private:
     ros::NodeHandle handler_;
-    // 用指针避免出现报错,
-    // SEVERE WARNING!!! 
-    // Attempting to unload library while objects created by 
-    // this loader exist in the heap! You should delete your objects 
-    // before attempting to unload the library or destroying the ClassLoader. 
-    // The library will NOT be unloaded.
+    // 用指针是为了避免使用初始化列表
     pluginlib::ClassLoader<T>* baseClassLoader_;
 };
 
@@ -50,7 +55,6 @@ int main(int argc, char* argv[]){
             catInstance.instancePtr_->makeSound();
             catInstance.instancePtr_->move(10);
         }
-        
     }
     if (handler.getParam("can_fly_animal", flyClassType)){
         growInstance<baseAnimal::canFly> flyInstance("my_pluginlib_learning", "baseAnimal::canFly", flyClassType);

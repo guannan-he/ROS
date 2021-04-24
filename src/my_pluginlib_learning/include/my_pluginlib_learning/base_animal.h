@@ -13,7 +13,11 @@ namespace baseAnimal{
         virtual void makeSound() = 0;
         virtual void move(int len) = 0;
         virtual ~canRun(){};
+        std::string getName(){
+            return name_;
+        }
         protected:
+        std::string name_;
         canRun(){};
     };
     class canFly{
@@ -22,7 +26,11 @@ namespace baseAnimal{
         virtual void makeSound() = 0;
         virtual void move(int len) = 0;
         virtual ~canFly(){};
+        std::string getName(){
+            return name_;
+        }
         protected:
+        std::string name_;
         canFly(){};
     };
     class canSwim{
@@ -31,7 +39,11 @@ namespace baseAnimal{
         virtual void makeSound() = 0;
         virtual void move(int len) = 0;
         virtual ~canSwim(){};
+        std::string getName(){
+            return name_;
+        }
         protected:
+        std::string name_;
         canSwim(){};
     };
 };

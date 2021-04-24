@@ -25,7 +25,6 @@ namespace walkingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
     class dog : public baseAnimal::canRun{
@@ -49,7 +48,6 @@ namespace walkingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
 };
@@ -75,7 +73,6 @@ namespace flyingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
     class eagle : public baseAnimal::canFly{
@@ -99,7 +96,6 @@ namespace flyingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
 };
@@ -125,7 +121,6 @@ namespace swimingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
     class duck : public baseAnimal::canSwim{
@@ -149,7 +144,6 @@ namespace swimingAnimals{
             totalMove_ += len;
         };
         protected:
-        std::string name_;
         int totalMove_;
     };
 };
