@@ -1,0 +1,99 @@
+<launch>
+<!-- 不同管理器的下挂节点名称要不同 -->
+    <!-- 话题发布与订阅节点 -->
+    <node
+        pkg = "rostopic"
+        type = "rostopic"
+        name = "string_publisher"
+        args = "pub /input std_msgs/String a -r 1"
+    />
+    <node
+        pkg = "rostopic"
+        type = "rostopic"
+        name = "string_listener"
+        args = "echo /output"
+        output = "screen"
+    />
+    <!-- manager1 -->
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "nodelet_manager_1"
+        args = "manager"
+        output = "screen"
+    />
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "subPubInstance1"
+        args = "load serialPubSub nodelet_manager_1"
+        output = "screen">
+        <remap
+            from = "subPubInstance1/input"
+            to = "input"
+        />
+        <remap
+            from = "subPubInstance1/output"
+            to = "nodelet_manager_1/subPubInstance1"
+        />
+    </node>
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "subPubInstance2"
+        args = "load serialPubSub nodelet_manager_1"
+        output = "screen">
+        <remap
+            from = "subPubInstance2/input"
+            to = "nodelet_manager_1/subPubInstance1"
+        />
+        <remap
+            from = "subPubInstance2/output"
+            to = "mid"
+        />
+    </node>
+    <!-- manager2 -->
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "nodelet_manager_2"
+        args = "manager"
+        output = "screen"
+    />
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "subPubInstance3"
+        args = "load serialPubSub nodelet_manager_2"
+        output = "screen">
+        <remap
+            from = "subPubInstance3/input"
+            to = "mid"
+        />
+        <remap
+            from = "subPubInstance3/output"
+            to = "nodelet_manager_2/subPubInstance3"
+        />
+    </node>
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "subPubInstance4"
+        args = "load serialPubSub nodelet_manager_2"
+        output = "screen">
+        <remap
+            from = "subPubInstance4/input"
+            to = "nodelet_manager_2/subPubInstance3"
+        />
+        <remap
+            from = "subPubInstance4/output"
+            to = "output"
+        />
+    </node>
+    <!-- debug -->
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "rqt_graph_debug_node"
+    />
+</launch>

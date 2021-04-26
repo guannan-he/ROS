@@ -25,7 +25,7 @@
         type = "action_client_avg"
         name = "avgActionClient"
         output = "screen"
-        args = "20"
+        args = "100"
     />
     <!-- 刷新频率, maxVal -->
     <node
@@ -38,6 +38,13 @@
         pkg = "rqt_graph"
         type = "rqt_graph"
         name = "connectionGraph"
+        output = "screen"
+    />
+    <node
+        pkg = "rostopic"
+        type = "rostopic"
+        name = "rostopic_debug_node"
+        args = "echo /avgActionServer/feedback"
         output = "screen"
     />
 </launch>

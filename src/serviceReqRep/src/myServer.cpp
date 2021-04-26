@@ -10,7 +10,7 @@ using namespace ros;
 
 bool handleFunc(serviceReqRep::greeting::Request& req, serviceReqRep::greeting::Response& res){
     ROS_INFO("Requst from %s with age %d.", req.name.c_str(), req.age);
-    res.feedback = "Hi" + req.name + "!";
+    res.feedback = "Hi! " + req.name + "!";
     return req.age > -1;
 }
 
