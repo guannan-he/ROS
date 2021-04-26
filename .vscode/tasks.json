@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "prerun",
+            "type": "shell",
+            "command": "source ./devel/setup.sh && export ROS_MASTER_URI=http://localhost:11311/ "
+        },
+        {
+            "label": "catkin build",
+            "type": "shell",
+            "command": "catkin",
+            "args": [
+                "build",
+                "-DCMAKE_BUILD_TYPE=Debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "catkin clean",
+            "type": "shell",
+            "command": "catkin",
+            "args": [
+                "clean",
+                "-y"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "ccb",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "catkin clean",
+                "catkin build"
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        }
+    ]
+}

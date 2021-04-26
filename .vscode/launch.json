@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // 在要debug的cmakelist里第三行插入
+            // SET(CMAKE_BUILD_TYPE Debug)
+            // 
+            // https://haoqchen.site/2019/08/15/debug-ros-with-vscode/
+            // 修改为编译文件的名称
+            "name": "myTalker",
+            "type": "cppdbg",
+            "request": "launch",
+            // 可执行对象的位置
+            "program": "${workspaceFolder}/devel/lib/topicPubSub/myTalker",
+            // 启动传入参数
+            "args": [
+                "_model:=RS16",
+                "_resolution_type:=1.0cm"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "prerun",
+            "MIMode": "gdb",
+            "avoidWindowsConsoleRedirection": true,
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
