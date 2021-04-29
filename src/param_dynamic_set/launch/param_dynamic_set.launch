@@ -1,0 +1,24 @@
+<launch>
+    <!-- 节点名和配置服务名称相同 -->
+    <node
+        pkg = "param_dynamic_set"
+        type = "dynamic_configure_node"
+        name = "dynamic_configure_node"
+        output = "screen"
+    />
+    <node
+        pkg = "param_dynamic_set"
+        type = "my_param_dynamic_set_call_server"
+        name = "my_param_dynamic_set_call_server"
+    />
+    <node
+        pkg = "rqt_reconfigure"
+        type = "rqt_reconfigure"
+        name = "rqt_reconfigure_window"
+    />
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "rqt_graph_window"
+    />
+</launch>

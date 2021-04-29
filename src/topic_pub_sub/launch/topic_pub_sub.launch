@@ -1,0 +1,19 @@
+<launch>
+    <node
+        pkg = "topic_pub_sub"
+        type = "myTalker"
+        name = "my_talker_node"
+        output = "screen"
+    />
+    <node
+        pkg = "topic_pub_sub"
+        type = "myListener"
+        name = "my_listener_node"
+        output = "screen"
+    />
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "rqt_graph_debug_node"
+    />
+</launch>
