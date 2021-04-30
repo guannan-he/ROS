@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<robot name = "lasis_vehicle" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- links -->
+    <xacro:macro name = "chassis">
+        <link name="chassis">
+            <visual>
+                <geometry>
+                    <box size = "0.8 0.4 0.2"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size = "0.8 0.4 0.2"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <mass value = "10"/>
+                <inertia
+                    ixx = "0.167" ixy = "0" ixz = "0"
+                    iyy = "0.569" iyz = "0"
+                    izz = "0.67"
+                />
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name = "wheel" params = "subfix">
+        <link name="wheel_${subfix}">
+            <visual>
+                <geometry>
+                    <cylinder
+                        length = "$(arg wheel_width)"
+                        radius = "$(arg wheel_radius)"
+                    />
+                </geometry>
+                <material name = "$(arg wheel_color)"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder
+                        length = "$(arg wheel_width)"
+                        radius = "$(arg wheel_radius)"
+                    />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value = "$(arg wheel_mass)"/>
+                <inertia
+                    ixx = "$(arg wheel_ixx)" ixy = "0" ixz = "0"
+                    iyy = "$(arg wheel_iyy)" iyz = "0"
+                    izz = "$(arg wheel_izz)"
+                />
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name = "bracket" params = "subfix">
+        <link name="bracket_${subfix}">
+            <visual>
+                <geometry>
+                    <cylinder
+                        length = "0.05"
+                        radius = "0.05"
+                    />
+                </geometry>
+                <origin
+                    xyz = "0 0 0"
+                    rpy = "1.57075 0 0"
+                />
+                <material name = "$(arg wheel_color)"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder
+                        length = "0.05"
+                        radius = "0.05"
+                    />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value = "0.01"/>
+                <inertia
+                    ixx = "0.001" ixy = "0" ixz = "0"
+                    iyy = "0.001" iyz = "0"
+                    izz = "0.001"
+                />
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <!-- joints -->
+
+    <xacro:macro name = "front_wheel_joint" params = "side">
+        <joint name = "wheel_f${side}_to_bracket_${side}" type = "continuous">
+            <axis xyz = "0 0 -1"/>
+            <parent link = "bracket_${side}"/>
+            <child link = "wheel_f${side}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name = "bracket_to_chassis" params = "side value">
+        <joint name = "bracket_${side}_to_chassis" type = "revolute">
+            <origin 
+                xyz="0.3 ${0.3 * value} -0.1"
+                rpy = "1.5708 0 0"
+            />
+            <axis xyz = "0 -1 0"/>
+            <limit
+                upper = "0.6"
+                lower = "-0.6"
+                effort = "1000"
+                velocity = "1000"
+            />
+            <parent link = "chassis"/>
+            <child link = "bracket_${side}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name = "rear_wheel_joint" params = "side value">
+        <joint name = "wheel_r${side}_to_chassis" type = "continuous">
+            <origin 
+                xyz="-0.3 ${0.3 * value} -0.1"
+                rpy = "1.5708 0 0"
+            />
+            <axis xyz = "0 0 -1"/>
+            <parent link = "chassis"/>
+            <child link = "wheel_r${side}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name = "chassis_to_base">
+        <joint name = "chassis_to_base_link" type = "fixed">
+            <origin xyz="0 0 0.2" rpy="0 0 0" />
+            <parent link="base_link" />
+            <child link="chassis" />
+        </joint>
+    </xacro:macro>
+
+    <!-- transmissions -->
+
+    <xacro:macro name="rear_wheel_transmission" params="side">
+        <transmission name="wheel_r${side}_transmission" type="SimpleTransmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="wheel_r${side}_to_chassis">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="wheel_r${side}_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+    <xacro:macro name="front_wheel_transmission" params="side">
+        <transmission name="wheel_f${side}_transmission" type="SimpleTransmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="wheel_f${side}_to_bracket_${side}">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="wheel_f${side}_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+    <xacro:macro name="front_wheel_steering" params="side">
+        <transmission name="bracket_${side}_transmission" type="SimpleTransmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="bracket_${side}_to_chassis">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="bracket_${side}_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+</robot>

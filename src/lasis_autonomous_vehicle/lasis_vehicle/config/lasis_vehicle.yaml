@@ -1,0 +1,36 @@
+lasis_vehicle:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+  
+
+  # Velocity Controllers ---------------------------------------
+  wheel_rl_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: wheel_rl_to_chassis
+    pid: {p: 1.0, i: 0.0, d: 0.0, i_clamp: 0.0}
+  wheel_rr_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: wheel_rr_to_chassis
+    pid: {p: 1.0, i: 0.0, d: 0.0, i_clamp: 0.0}
+  wheel_fl_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: wheel_fl_to_bracket_l
+    pid: {p: 0.5, i: 0.0, d: 0.0, i_clamp: 0.0}
+  wheel_fr_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: wheel_fr_to_bracket_r
+    pid: {p: 0.5, i: 0.0, d: 0.0, i_clamp: 0.0}
+
+
+  # Position Controllers ---------------------------------------
+  bracket_l_position_controller:
+    joint: bracket_l_to_chassis
+    type: effort_controllers/JointPositionController
+    pid: {p: 10.0, i: 0.0, d: 0.5}
+  bracket_r_position_controller:
+    joint: bracket_r_to_chassis
+    type: effort_controllers/JointPositionController
+    pid: {p: 10.0, i: 0.0, d: 0.5}
+

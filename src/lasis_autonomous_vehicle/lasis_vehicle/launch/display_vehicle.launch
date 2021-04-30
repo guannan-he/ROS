@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+    <arg
+        name = "model"
+        default = "$(find lasis_vehicle)/urdf/lasis_vehicle.xacro"
+    />
+    <arg 
+        name = "gui"
+        default = "true"
+    />
+    <arg
+        name = "rviz_config"
+        default = "$(find lasis_vehicle)/urdf/rviz_config.rviz"
+    />
+    <param name = "robot_description" command = "$(find xacro)/xacro --inorder $(arg model)" />
+    <param name = "use_gui" value = "$(arg gui)" />
+    <node
+        name = "joint_state_publisher"
+        pkg = "joint_state_publisher"
+        type = "joint_state_publisher"
+    />
+    <node
+        name = "robot_state_publisher"
+        pkg = "robot_state_publisher"
+        type = "state_publisher"
+    />
+    <!-- debug -->
+    <node
+        name = "tf_tree_debug"
+        pkg = "rqt_tf_tree"
+        type = "rqt_tf_tree"
+    />
+    <node
+        name = "rviz_debug"
+        pkg = "rviz"
+        type = "rviz"
+        args="-d $(arg rviz_config)"
+    />
+    <node
+        pkg = "rqt_graph"
+        type = "rqt_graph"
+        name = "rqt_graph_debug"
+    />
+</launch>

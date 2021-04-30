@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <name>lasis_autonomous_vehicle</name>
+  <version>0.0.1</version>
+  <description>
+    lasis autonomous vehicle
+    depends:
+    1. Metapackage for ROS interface to the Vedder VESC open source motor controller.
+  </description>
+  <maintainer email="lasis@todo.todo">lasis</maintainer>
+
+  <!-- <maintainer email="boulet@ll.mit.edu">Michael T. Boulet</maintainer>
+  <author email="boulet@ll.mit.edu">Michael T. Boulet</author> -->
+  <license>BSD</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>vesc</run_depend>
+  <run_depend>lasis_vehicle</run_depend>
+  <run_depend>lasis_vehicle_control</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+
+</package>
