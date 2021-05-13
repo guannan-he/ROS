@@ -1,5 +1,5 @@
-#ifndef _MY_DICAARROT_
-#define _MY_DICAARROT_
+#ifndef _MY_CAARROT_
+#define _MY_CAARROT_
 
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d.h>
@@ -136,10 +136,7 @@ namespace global_planner{
         tf::Quaternion goalQuat = tf::createQuaternionFromYaw(targetYaw);
         newGoal.pose.position.x = targetX;
         newGoal.pose.position.y = targetY;
-        newGoal.pose.orientation.x = goalQuat.x();
-        newGoal.pose.orientation.y = goalQuat.y();
-        newGoal.pose.orientation.z = goalQuat.z();
-        newGoal.pose.orientation.w = goalQuat.w();
+        tf::quaternionTFToMsg(goalQuat, newGoal.pose.orientation);
         plan.push_back(newGoal);
         return done;
     }

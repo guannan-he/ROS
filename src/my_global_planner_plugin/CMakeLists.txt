@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(my_global_planner_plugin)
-
+SET(CMAKE_BUILD_TYPE Debug)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
@@ -138,6 +138,7 @@ add_library(my_global_planner_plugin
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+add_executable(click_point_make_plan src/click_point_make_plan.cpp)
 # add_executable(${PROJECT_NAME}_node src/my_global_planner_plugin_node.cpp)
 
 ## Rename C++ executable without prefix
@@ -148,11 +149,15 @@ add_library(my_global_planner_plugin
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
+add_dependencies(click_point_make_plan ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # 必须加上link的lib
 target_link_libraries(my_global_planner_plugin
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(click_point_make_plan
   ${catkin_LIBRARIES}
 )
 
