@@ -1,19 +1,25 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(my_pluginlib_learning)
+project(my_global_planner_plugin)
 
-# Compile as C++11, supported in ROS Kinetic and newer
- add_compile_options(-std=c++11)
+## Compile as C++11, supported in ROS Kinetic and newer
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  angles
+  base_local_planner
+  costmap_2d
+  geometry_msgs
+  nav_core
   pluginlib
   roscpp
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -69,7 +75,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+#   geometry_msgs
 # )
 
 ################################################
@@ -102,10 +108,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES my_pluginlib_learning
-#  CATKIN_DEPENDS pluginlib roscpp
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES my_global_planner_plugin
+ CATKIN_DEPENDS angles base_local_planner costmap_2d geometry_msgs nav_core pluginlib roscpp
+ DEPENDS system_lib
 )
 
 ###########
@@ -120,9 +126,8 @@ include_directories(
 )
 
 # Declare a C++ library
-# 第一步, 这里首先指定lib的名字,生成so库
-add_library(animal_plugin
-  src/plugin_register.cpp
+add_library(my_global_planner_plugin
+  src/my_global_planner_register.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -133,7 +138,7 @@ add_library(animal_plugin
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(plugin_caller src/plugin_caller.cpp)
+# add_executable(${PROJECT_NAME}_node src/my_global_planner_plugin_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -146,12 +151,8 @@ add_executable(plugin_caller src/plugin_caller.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
-# 这个一定要加，没有caller的话直接用lib名称
-target_link_libraries(plugin_caller
+# 必须加上link的lib
+target_link_libraries(my_global_planner_plugin
   ${catkin_LIBRARIES}
 )
 
@@ -202,7 +203,7 @@ target_link_libraries(plugin_caller
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_my_pluginlib_learning.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_my_global_planner_plugin.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

@@ -58,6 +58,10 @@
         "utility": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "string": "cpp"
-    }
+        "string": "cpp",
+        "mutex": "cpp"
+    },
+    "python.analysis.extraPaths": [
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
 }
