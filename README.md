@@ -8,4 +8,7 @@
 7. nodelet  
 8. debug：[教程](https://haoqchen.site/2019/08/15/debug-ros-with-vscode/)  
 9. lasis_vehicle: 正在实现 [参考](https://github.com/xmy0916/racecar)  
+10. my_global_planner_plugin  
+    [carrot planner](http://wiki.ros.org/navigation/Tutorials/Writing%20A%20Global%20Path%20Planner%20As%20Plugin%20in%20ROS)  
+    [aStar planner& dijkstra planner](https://zhuanlan.zhihu.com/p/113662488)  
 

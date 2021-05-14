@@ -6,6 +6,7 @@
 #include <move_base/move_base.h>
 #include <geometry_msgs/PointStamped.h>
 #include <tf/tf.h>
+#include <tf/transform_datatypes.h>
 #include <tf/transform_listener.h>
 
 class planCaller{

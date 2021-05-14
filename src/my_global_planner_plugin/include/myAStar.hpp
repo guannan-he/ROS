@@ -1,5 +1,5 @@
-#ifndef _MY_DIJKSTRA_
-#define _MY_DIJKSTRA_
+#ifndef _MY_ASTAR_
+#define _MY_ASTAR_
 
 #include <my_global_planner_common.hpp>
 #include <ros/ros.h>
@@ -17,12 +17,12 @@
 
 
 namespace global_planner{
-
-    class myDijkstra : public nav_core::BaseGlobalPlanner{
+    
+    class myAStar : public nav_core::BaseGlobalPlanner{
         public:
-        myDijkstra();
+        myAStar();
 
-        myDijkstra(std::string name, costmap_2d::Costmap2DROS* costmapRos);
+        myAStar(std::string name, costmap_2d::Costmap2DROS* costmapRos);
 
         void initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos);
 
@@ -44,18 +44,18 @@ namespace global_planner{
 };
 
 namespace global_planner{
-    myDijkstra::myDijkstra(){
+    myAStar::myAStar(){
         return;
     }
 
-    myDijkstra::myDijkstra(std::string name, costmap_2d::Costmap2DROS* costmapRos){
+    myAStar::myAStar(std::string name, costmap_2d::Costmap2DROS* costmapRos){
         initialize(name, costmapRos);
         return;
     }
 
-    void myDijkstra::initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos){
+    void myAStar::initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos){
         if (initialized_){
-            ROS_WARN("Dijkstra planner already initialized.");
+            ROS_WARN("aStar planner already initialized.");
             return;
         }
         costmapRos_ = costmapRos;
@@ -73,7 +73,7 @@ namespace global_planner{
         initialized_ = true;
     }
 
-    bool myDijkstra::makePlan(const geometry_msgs::PoseStamped& start, const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
+    bool myAStar::makePlan(const geometry_msgs::PoseStamped& start, const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
         if (!initialized_){
             ROS_WARN("carrot not initialized yet.");
             return false;
@@ -93,9 +93,9 @@ namespace global_planner{
 
         std::vector<double> gCost(mapSize, infVal);
         std::vector<int> parent(mapSize, -1);
-        std::multiset<dijkstraNode> que;
+        std::multiset<aSrarNode> que;
         gCost[start_index] = 0;
-        dijkstraNode current;
+        aSrarNode current;
         current.cost = 0;
         current.index = start_index;
         que.insert(current);
@@ -114,9 +114,9 @@ namespace global_planner{
                 }
                 gCost[neighbourIndex[i]] = gCost[current.index] + getMoveCost(current.index, neighbourIndex[i]);
                 parent[neighbourIndex[i]] = current.index;
-                dijkstraNode neighbourNode;
+                aSrarNode neighbourNode;
                 neighbourNode.index = neighbourIndex[i];
-                neighbourNode.cost = gCost[neighbourIndex[i]];
+                neighbourNode.cost = gCost[neighbourIndex[i]] + getHeuristic(neighbourIndex[i], goal_index);
                 que.insert(neighbourNode);
             }
         }
@@ -151,7 +151,7 @@ namespace global_planner{
         return true;
     }
 
-    int myDijkstra::getIndexFromMap(const geometry_msgs::PoseStamped& pose){//从pose获取index
+    int myAStar::getIndexFromMap(const geometry_msgs::PoseStamped& pose){//从pose获取index
         double wx = pose.pose.position.x;
         double wy = pose.pose.position.y;
         unsigned int mx, my;
@@ -159,11 +159,11 @@ namespace global_planner{
         return costmap_->getIndex(mx, my);
     }
 
-    bool myDijkstra::inBoundary(int x, int y){//确保x, y在边界线内
+    bool myAStar::inBoundary(int x, int y){//确保x, y在边界线内
         return x > -1 && y > -1 && x < width && y < height;
     }
 
-    std::vector<int> myDijkstra::getNeighbourIndex(int cellIndex){//获取相邻编号
+    std::vector<int> myAStar::getNeighbourIndex(int cellIndex){//获取相邻编号
         unsigned int mx, my;
         costmap_->indexToCells(cellIndex, mx, my);
         std::vector<int> res;
@@ -179,7 +179,7 @@ namespace global_planner{
         return res;
     }
 
-    double myDijkstra::getMoveCost(int firstIndex, int secondIndex){//从邻居移动到当前点的几何距离
+    double myAStar::getMoveCost(int firstIndex, int secondIndex){//从邻居移动到当前点的几何距离
         unsigned int tmp1, tmp2;
         costmap_->indexToCells(firstIndex, tmp1, tmp2);
         int firstXCord = tmp1,firstYCord = tmp2;
@@ -189,7 +189,7 @@ namespace global_planner{
         int difference = abs(firstXCord - secondXCord) + abs(firstYCord - secondYCord);
         // Error checking
         if(difference != 1 && difference != 2){
-            ROS_ERROR("Dijkstra global planner: Error in getMoveCost - difference not valid");
+            ROS_ERROR("Astar global planner: Error in getMoveCost - difference not valid");
             return 1.0;
         }
         if(difference == 1){
@@ -197,7 +197,15 @@ namespace global_planner{
         }
         return 1.4;
     }
-};
 
+    double myAStar::getHeuristic(int cell_index, int goal_index){//当前点到目标点的曼哈顿距离
+        unsigned int tmp1, tmp2;
+        costmap_->indexToCells(cell_index, tmp1, tmp2);
+        int startX = tmp1, startY = tmp2;
+        costmap_->indexToCells(goal_index, tmp1, tmp2);
+        int goalX = tmp1, goalY = tmp2;
+        return abs(goalY - startY) + abs(goalX - startX);
+    }
+};
 
 #endif

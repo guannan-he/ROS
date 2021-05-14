@@ -81,6 +81,7 @@ namespace global_planner{
     }
 
     bool myCarrot::makePlan(const geometry_msgs::PoseStamped& start, const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
+        // 就是做一条射线，然后遇到障碍就停
         if (!initialized_){
             ROS_WARN("carrot not initialized yet.");
             return false;
@@ -101,35 +102,36 @@ namespace global_planner{
         double startYaw, goalYaw, uselessPitch, uselessRoll;
         startTF.getBasis().getEulerYPR(startYaw, uselessPitch, uselessRoll);
         goalTF.getBasis().getEulerYPR(goalYaw, uselessPitch, uselessRoll);
+
+        bool done = false;
+        double scale = 0;
+        double dScale = 0.01;
         double goalX = goal.pose.position.x;
         double goalY = goal.pose.position.y;
         double startX = start.pose.position.x;
         double startY = start.pose.position.y;
-        double diffX = goalX - startX;
-        double diffY = goalY - startY;
+        double diffX = (goalX - startX) * dScale;
+        double diffY = (goalY - startY) * dScale;
         double diffYaw = angles::normalize_angle(goalYaw-startYaw);
-        double targetX = goalX;
-        double targetY = goalY;
-        double targetYaw = goalYaw;
+        double targetX = startX;
+        double targetY = startY;
+        double targetYaw = startYaw;
 
-        bool done = false;
-        double scale = 1.0;
-        double dScale = 0.01;
-        while (!done){
-            if (scale < 0){
-                targetX = startX;
-                targetY = startY;
-                targetY = startYaw;
-                ROS_WARN("no feasible plan.");
-                break;
-            }
-            targetX = startX + scale * diffX;
-            targetY = startY + scale * diffY;
-            targetYaw = angles::normalize_angle(startYaw + scale * diffYaw);
-            if (footprintCost(targetX, targetY, targetYaw) >= 0){
+        while (!done && scale <= 1.0){
+            targetX += diffX;
+            targetY += diffY;
+            targetYaw = angles::normalize_angle(targetYaw + diffYaw);
+            if (footprintCost(targetX, targetY, targetYaw) < 0){
+                if (scale < dScale){
+                    ROS_WARN("no feasible plan.");
+                    return false;
+                }
+                targetX -= diffX;
+                targetY -= diffY;
+                targetYaw = angles::normalize_angle(targetYaw - diffYaw);
                 done = true;
             }
-            scale -= dScale;
+            scale += dScale;
         }
         plan.push_back(start);
         geometry_msgs::PoseStamped newGoal = goal;

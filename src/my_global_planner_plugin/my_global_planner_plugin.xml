@@ -1,6 +1,12 @@
 <!-- It is typically to use the namespace (global_planner) followed by a a slash then the name of the class (GlobalPlanner) to specify the name of plugin. if you do not specify the name, then the name will be equal to the type, which is in this case will be global_planner::GlobalPlanner. It recommended to specify the name to avoid confusion. -->
 <library path = "libmy_global_planner_plugin">
     <class name = "global_planner/myCarrot" type = "global_planner::myCarrot" base_class_type = "nav_core::BaseGlobalPlanner">
-        <description>my dijkstra planner.</description>
+        <description>my carrot planner.</description>
+    </class>
+    <class name = "global_planner/myAStar" type = "global_planner::myAStar" base_class_type = "nav_core::BaseGlobalPlanner">
+        <description>my aStar planner.</description>
+    </class>
+    <class name = "global_planner/myDijkstra" type = "global_planner::myDijkstra" base_class_type = "nav_core::BaseGlobalPlanner">
+        <description>my Dijkstra planner.</description>
     </class>
 </library>
