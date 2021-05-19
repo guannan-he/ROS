@@ -9,4 +9,7 @@
     <class name = "global_planner/myDijkstra" type = "global_planner::myDijkstra" base_class_type = "nav_core::BaseGlobalPlanner">
         <description>my Dijkstra planner.</description>
     </class>
+    <class name = "global_planner/myRosDijkstra" type = "global_planner::myRosDijkstra" base_class_type = "nav_core::BaseGlobalPlanner">
+        <description>my Dijkstra planner with ros wrapper.</description>
+    </class>
 </library>

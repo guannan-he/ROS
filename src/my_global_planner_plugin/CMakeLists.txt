@@ -139,6 +139,7 @@ add_library(my_global_planner_plugin
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(click_point_make_plan src/click_point_make_plan.cpp)
+add_executable(kernelTest src/kernelTest.cpp)
 # add_executable(${PROJECT_NAME}_node src/my_global_planner_plugin_node.cpp)
 
 ## Rename C++ executable without prefix
@@ -150,6 +151,7 @@ add_executable(click_point_make_plan src/click_point_make_plan.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(click_point_make_plan ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(kernelTest ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
@@ -158,6 +160,9 @@ target_link_libraries(my_global_planner_plugin
   ${catkin_LIBRARIES}
 )
 target_link_libraries(click_point_make_plan
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(kernelTest
   ${catkin_LIBRARIES}
 )
 

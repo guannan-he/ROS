@@ -1,3 +1,18 @@
+/**
+ * @file myDijkstra.hpp
+ * @brief dijkstra algorithm for move_base pkg
+ * @author guannan-he (guannan-he@outlook.com)
+ * @version 1.0
+ * @date 2021-05-15
+ * 
+ * @copyright Copyright (c) {2021}  合肥工业大学-LASIS-何冠男
+ * 
+ * @par 修改日志:
+ * <table>
+ * <tr><th>Date       <th>Version <th>Author  <th>Description
+ * <tr><td>2021-05-15 <td>1.0     <td>guannan-he     <td>内容
+ * </table>
+ */
 #ifndef _MY_DIJKSTRA_
 #define _MY_DIJKSTRA_
 
@@ -34,11 +49,43 @@ namespace global_planner{
         costmap_2d::Costmap2D* costmap_ = NULL;
         bool initialized_ = false;
         int width = -1, height = -1, mapSize = -1;
+        /**
+         * @brief 有效栅格
+         */
         std::vector<bool> OCM;
+        /**
+         * @brief Get the Index From Map
+         * @param  pose             geometry_msgs::PoseStamped
+         * @return int 
+         */
         int getIndexFromMap(const geometry_msgs::PoseStamped& pose);
+        /**
+         * @brief 
+         * @param  x                cell x
+         * @param  y                cell y
+         * @return true 
+         * @return false 
+         */
         bool inBoundary(int x, int y);
+        /**
+         * @brief Get the Neighbour Index around the cell, 8 directions
+         * @param  cellIndex        My Param doc
+         * @return std::vector<int> 
+         */
         std::vector<int> getNeighbourIndex(int cellIndex);
+        /**
+         * @brief Get the Move Cost from one cell to another cell
+         * @param  firstIndex       My Param doc
+         * @param  secondIndex      My Param doc
+         * @return double 
+         */
         double getMoveCost(int firstIndex, int secondIndex);
+        /**
+         * @brief Get the Heuristic from one cell to another cell
+         * @param  cell_index       My Param doc
+         * @param  goal_index       My Param doc
+         * @return double 
+         */
         double getHeuristic(int cell_index, int goal_index);
     };
 };

@@ -1,0 +1,19 @@
+<launch>
+    <arg name = "map_name" default = "my_map"/>
+    <!-- <arg name = "map_name" default = "willow"/>
+    <arg name = "map_name" default = "costa"/> -->
+    <arg name="rviz_config" default="$(find my_global_planner_plugin)/rviz/kernelDebug.rviz"/>
+    <node
+        pkg = "map_server"
+        type = "map_server"
+        name = "static_map_provider"
+        args = "$(find provide_map)/include/map/$(arg map_name).yaml"
+        output = "screen"
+    />
+    <node
+    pkg = "rviz"
+    type = "rviz"
+    name = "rviz_window"
+    args = "-d $(arg rviz_config)"
+  />
+</launch>
