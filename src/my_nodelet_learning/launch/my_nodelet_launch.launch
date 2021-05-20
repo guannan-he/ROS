@@ -52,6 +52,21 @@
             to = "mid"
         />
     </node>
+    <node
+        pkg = "nodelet"
+        type = "nodelet"
+        name = "myNodelet"
+        args = "load myNodeLetxx nodelet_manager_1"
+        output = "screen">
+        <remap
+            from = "subPubInstance3/input"
+            to = "mid"
+        />
+        <remap
+            from = "subPubInstance3/output"
+            to = "nodelet_manager_2/subPubInstance3"
+        />
+    </node>
     <!-- manager2 -->
     <node
         pkg = "nodelet"

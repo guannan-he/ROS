@@ -1,7 +1,7 @@
 <library path = "lib/libmy_nodelet_learning">
     <!-- 随便起一个名字就行，和launch 文件内对应 -->
     <class
-        name = "cccmy_nodelet_learning/myNodeLetxx"
+        name = "myNodeLetxx"
         type = "myNodeletClass::myNodeLet"
         base_class_type = "nodelet::Nodelet">
     <description>This is my nodelet</description>

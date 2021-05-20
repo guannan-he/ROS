@@ -1,56 +1,90 @@
 # ROS packages  
 ## 1. [topic 发送订阅](https://github.com/guannan-he/ROS/tree/main/src/topic_pub_sub)  
+
 my_talker_node 通过三个话题向 my_listener_node 发送两种消息  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch topic_pub_sub topic_pub_sub.launch
 ```  
+
 ![image](images/topic_pub_sub/nodes.png)  
+
 ## 2. [service 客户端、服务器](https://github.com/guannan-he/ROS/tree/main/src/service_req_rep)   
+
 my_client_node 向 my_server_node 发送服务请求，my_server_node 视数据有效性决定是否拒绝服务  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch service_req_rep service_req_rep.launch
 ```  
+
 ![image](images/service_req_rep/nodes.png)  
+
 ## 3. [param 服务器](https://github.com/guannan-he/ROS/tree/main/src/param_dynamic_set)  
+
 dynamic_configure_node 收到参数变化请求后调用 myParamDynamicSetCallServer 提供的服务  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch param_dynamic_set param_dynamic_set.launch
 ```  
+
 ![image](images/param_dynamic_set/nodes.png)  
+
 ## 4. [小乌龟TF](https://github.com/guannan-he/ROS/tree/main/src/learning_tf)  
+
 通过键盘控制乌龟1位置，乌龟2订阅TF树上`乌龟1上参考点`相对于`乌龟2`的变换，乌龟2跟踪该变换并设法使变换归零。跟踪目标可以通过`start_demo.launch`修改  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch learning_tf start_demo.launch
 ```  
+
 ![image](images/learning_tf/nodes.png)  
+
 ## 5. [动作服务器](https://github.com/guannan-he/ROS/tree/main/src/action_server_client)  
+
 randNumGen 生成随机数发布到 randomNumber 话题，avgActionClient 设定目标并接受 avgActionServer 提供的反馈  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch action_server_client server_and_client_avg.launch
 ```  
+
 ![image](images/action_server_client/nodes.png)  
+
 ## 6. [pluginlib](https://github.com/guannan-he/ROS/tree/main/src/my_pluginlib_learning)  
+
 pluginlib 利用面向对象编程的继承概念，在`基类`中定义方法，在`继承类`中实现  
 推荐使用`公有继承`  
-运行命令  
+
+**运行命令**  
+
 ```
 roslaunch my_pluginlib_learning plugin_param_demo.launch
 ```  
-ROS中插件注册插件流程  
+
+**ROS中插件注册插件流程**  
+
 1) 编写`基类`和`继承类`的头文件，并使`继承类`继承`基类`的接口  
 2) 新建`源文件`并分别添加`基类`和`继承类`的头文件、`pluginlib/class_list_macros.h`头文件
 3) 在`源文件`中使用 `PLUGINLIB_EXPORT_CLASS(`继承类`, `基类`)` 指定`基类`和`继承类`的关系  
+
 4) 在 CMakeLists.txt 中添加如下代码以生成名为`lib插件名称.so`的动态链接库  
+
     ```
     add_library(插件名称 源文件)
     target_link_libraries(插件名称 ${catkin_LIBRARIES})
     ```
+
 5) 新建`插件描述.xml`对插件继承关系进行描述  
+
     ```
     <library path = "lib/lib插件名称">
         <class name = "任意起一个名字" type = "继承类" base_class_type = "基类">
@@ -58,26 +92,105 @@ ROS中插件注册插件流程
         </class>
     </library>
     ```
+
 6) 在`package.xml`中`<export>`标签下添加如下代码，将该插件注册到某一插件库中  
+
     ```
     <插件库名称 plugin = "${prefix}/插件描述.xml"/>
     ```  
+
 7) 编译后在终端中输入如下代码检查插件时否正确注册  
+
     ```
     rospack plugins --attrib=plugin 插件库名称
     ```  
-8) 在源文件中使用`基类`生成`继承类`实例，查看[plugin_caller.cpp](https://github.com/guannan-he/ROS/blob/main/src/my_pluginlib_learning/src/plugin_caller.cpp)查看具体使用方式，生成`继承类`既可以使用`插件描述.xml`中定义的名字，也可以使用`继承类`名称  
-## 7. nodelet  
-## 8. debug
-## 9. lasis_vehicle: 正在实现  
-## 10. my_global_planner_plugin  
- 
     
-# references  
+8) 在源文件中使用`基类`生成`继承类`实例，查看[plugin_caller.cpp](https://github.com/guannan-he/ROS/blob/main/src/my_pluginlib_learning/src/plugin_caller.cpp)查看具体使用方式，生成`继承类`既可以使用`插件描述.xml`中定义的名字，也可以使用`继承类`名称  
+
+## 7. [nodelet](https://github.com/guannan-he/ROS/tree/main/src/my_nodelet_learning)  
+string_publisher 节点发布消息到 input 话题  
+nodelet_manager_1 下注册 subPubInstance1 、subPubInstance2 和 myNodeLetxx  
+节点管理器下挂节点通过管理器对外订阅或发布话题  
+
+**运行命令**  
+
+```
+roslaunch my_nodelet_learning my_nodelet_launch.launch
+```  
+
+**nodelet 与 pluginlib 具有相似性**  
+
+1) 都需要继承于一个`基类`  
+2) 都需要在一个源文件中使用`PLUGINLIB_EXPORT_CLASS`宏  
+3) 都需要在在`CMakeLists.txt`中声明`add_library`  
+4) 都会生成动态链接库  
+5) 都需要`插件描述.xml`  
+6) 都需要在`package.xml`中进行注册  
+
+**不同点在于**  
+
+1) nodelet 只能继承`nodelet::Nodelet`类  
+2) nodelet 运行时必须依托一个管理节点，将不同 nodelet 注册到一个管理节点实现数据的指针传递  
+3) 插件必须注册到`nodelet`库中  
+4) 在 [launch](https://github.com/guannan-he/ROS/blob/main/src/my_nodelet_learning/launch/my_nodelet_launch.launch) 文件中使用如下命令指定 nodelet 类型  
+
+    ```
+    load nodelet名 管理节点名称
+    ```
+
+**注意**  
+
+1) nodelet 中使用`getPrivateNodeHandle()`获取私有节点控制权，使用`ros::NodeHandle`获取的是 nodelet 管理节点的控制权，详情查看[my_nodelet_register.cpp](https://github.com/guannan-he/ROS/blob/main/src/my_nodelet_learning/src/my_nodelet_register.cpp)  
+2) 管理节点是一个**抽象的**节点，不同类型的 nodelet 可以注册到一个管理节点上  
+3) 管理器下挂所有节点均通过节点管理器与外界交流  
+4) nodelet **可能**支持服务，但并**未**进行尝试
+
+
+![image](images/my_nodelet_learning/nodes.png)  
+## 8. [lasis_vehicle](https://github.com/guannan-he/ROS/tree/main/src/lasis_autonomous_vehicle)  
+
+正在实现，目前定义了一个urdf  
+后续可能用[北邮模型]()或者[北理FSAE模型](https://github.com/bitfsd/fssim)  
+
+## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
+
+提供下列节点供测试
+
+1) `click_point_make_plan` 使用 rviz 中发布点功能，调用`make_plan()`函数并发布路径  
+2) `kernelTest` 直接调用 `myRosDijkstra` 内核进行规划  
+
+提供下列全局路径规划器  
+
+1) `myCarrot planner` 起点指向终点的路径，遇到障碍结束  
+2) `myAStar planner` 基于像素的 AStar 算法
+3) `myDijkstra planner` 基于像素的 Dijkstra 算法
+4) `myRosDijkstra planner` 基于势能场的 Dijkstra 算法，并使用 wrapper 包装，方便调试  
+   
+**测试命令**  
+
+```
+roslaunch my_global_planner_plugin kernelDebug.launch
+```  
+**结果**  
+1) myCarrot  
+![image](images/my_global_planner_plugin/myCarrot.png)  
+
+1) myAStar  
+![image](images/my_global_planner_plugin/myAStar.png)  
+
+1) myDijkstra  
+![image](images/my_global_planner_plugin/myDijkstra.png)  
+
+1) myRosDijkstra  
+![image](images/my_global_planner_plugin/myRosDijkstra.png)  
+
+
+    
+# References  
 [pluginlib_tutorials](https://github.com/huchunxu/ros_blog_sources/tree/master/pluginlib_tutorials)  
-[教程](https://haoqchen.site/2019/08/15/debug-ros-with-vscode/)  
-[参考](https://github.com/xmy0916/racecar)  
+[如何配置VSCode来调试ROS节点](https://haoqchen.site/2019/08/15/debug-ros-with-vscode/)  
+[北邮-智能车](https://github.com/xmy0916/racecar)  
 [carrot planner](http://wiki.ros.org/navigation/Tutorials/Writing%20A%20Global%20Path%20Planner%20As%20Plugin%20in%20ROS)  
 [aStar planner& dijkstra planner](https://zhuanlan.zhihu.com/p/113662488)  
-[NavFnROS中势能计算](https://github.com/locusrobotics/robot_navigation/tree/master/dlux_global_planner#the-kernel) 
-
+[NavFnROS中势能计算](https://github.com/locusrobotics/robot_navigation/tree/master/dlux_global_planner#the-kernel)   
+[北理FSAE模型](https://github.com/bitfsd/fssim)
