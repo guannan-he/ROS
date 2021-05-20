@@ -1,3 +1,18 @@
+/**
+ * @file myDijkstraROS.hpp
+ * @brief a ros wrapper for myDijkstraKernel
+ * @author guannan-he (guannan-he@outlook.com)
+ * @version 1.0
+ * @date 2021-05-20
+ * 
+ * @copyright Copyright (c) {2021}  合肥工业大学-LASIS-何冠男
+ * 
+ * @par 修改日志:
+ * <table>
+ * <tr><th>Date       <th>Version <th>Author  <th>Description
+ * <tr><td>2021-05-20 <td>1.0     <td>guannan-he     <td>内容
+ * </table>
+ */
 #ifndef _MY_DIJKSTRA_ROS_
 #define _MY_DIJKSTRA_ROS_
 
@@ -22,7 +37,20 @@ namespace global_planner{
         myRosDijkstra();
         myRosDijkstra(std::string name, costmap_2d::Costmap2DROS* costmapRos);
         ~myRosDijkstra();
+        /**
+         * @brief  inherited from base global planner
+         * @param  name             paramname
+         * @param  costmapRos       paramname
+         */
         void initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos);
+        /**
+         * @brief make plan function
+         * @param  start            paramname
+         * @param  goal             paramname
+         * @param  plan             paramname
+         * @return true 
+         * @return false 
+         */
         bool makePlan(const geometry_msgs::PoseStamped& start, const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
         private:
         bool allowUnknow_ = false;
@@ -34,6 +62,10 @@ namespace global_planner{
         int width = -1, height = -1, mapSize = -1;
         float resolution_;
         float originX_, originY_;
+        /**
+         * @brief convert planned point into geometry_msgs/PoseStamped
+         * @param  plan             paramname
+         */
         void processPath(std::vector<geometry_msgs::PoseStamped>& plan);
     };
 };
