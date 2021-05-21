@@ -150,7 +150,7 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 ## 8. [lasis_vehicle](https://github.com/guannan-he/ROS/tree/main/src/lasis_autonomous_vehicle)  
 
 正在实现，目前定义了一个urdf  
-后续可能用[北邮模型]()或者[北理FSAE模型](https://github.com/bitfsd/fssim)  
+后续可能用[北邮模型](https://github.com/xmy0916/racecar)或者[AMZ-driverless](https://github.com/AMZ-Driverless/fssim)  
 
 ## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
 
@@ -193,4 +193,4 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 [carrot planner](http://wiki.ros.org/navigation/Tutorials/Writing%20A%20Global%20Path%20Planner%20As%20Plugin%20in%20ROS)  
 [aStar planner& dijkstra planner](https://zhuanlan.zhihu.com/p/113662488)  
 [NavFnROS中势能计算](https://github.com/locusrobotics/robot_navigation/tree/master/dlux_global_planner#the-kernel)   
-[北理FSAE模型](https://github.com/bitfsd/fssim)
+[AMZ-driverless](https://github.com/AMZ-Driverless/fssim)
