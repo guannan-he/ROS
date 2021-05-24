@@ -8,3 +8,4 @@ src/rf2o_laser_odometry
 src/turtlebot
 src/husky
 src/astar_planner
+src/fssim

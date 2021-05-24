@@ -8,8 +8,8 @@
       "includePath": [
         "/opt/ros/kinetic/include/**",
         "/usr/include/**",
-        "~/catkin_ws/devel/include/**",
-        "~/catkin_ws/**"
+        "${workspaceFolder}/devel/include/**",
+        "${workspaceFolder}/**"
       ],
       "name": "ROS"
     }

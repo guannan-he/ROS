@@ -16,9 +16,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <run_depend>vesc</run_depend>
-  <run_depend>lasis_vehicle</run_depend>
-  <run_depend>lasis_vehicle_control</run_depend>
+  <run_depend>ackermann_cmd_mux</run_depend>
+  <run_depend>racecar</run_depend>
+  <run_depend>racecar_description</run_depend>
+  <run_depend>racecar_control</run_depend>
+  <run_depend>racecar_gazebo</run_depend>
+  <run_depend>lasis_launch</run_depend>
 
   <export>
     <metapackage/>

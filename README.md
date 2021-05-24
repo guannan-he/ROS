@@ -148,9 +148,29 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 
 ![image](images/my_nodelet_learning/nodes.png)  
 ## 8. [lasis_vehicle](https://github.com/guannan-he/ROS/tree/main/src/lasis_autonomous_vehicle)  
+使用经过[北京邮电大学](https://github.com/xmy0916/racecar)修改过的[MIT模型](https://github.com/mit-racecar)  
+需要安装如下依赖  
 
-正在实现，目前定义了一个urdf  
-后续可能用[北邮模型](https://github.com/xmy0916/racecar)或者[AMZ-driverless](https://github.com/AMZ-Driverless/fssim)  
+```
+sudo apt-get install ros-kinetic-controller-manager
+sudo apt-get install ros-kinetic-gazebo-ros-control
+sudo apt-get install ros-kinetic-effort-controllers
+sudo apt-get install ros-kinetic-joint-state-controller
+sudo apt-get install ros-kinetic-driver-base
+sudo apt-get install ros-kinetic-rtabmap-ros
+sudo apt-get install ros-kinetic-teb-local-planner
+sudo apt-get install ros-kinetic-vesc*
+sudo apt-get install ros-kinetic-ackermann-*
+sudo apt-get install ros-kinetic-joystick-drivers
+```
+
+输入如下命令测试是否安装成功
+```
+roslaunch lasis_launch spawn_racecar.launch
+```
+
+
+正在实现
 
 ## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
 
