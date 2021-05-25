@@ -1,6 +1,8 @@
 {
     "python.autoComplete.extraPaths": [
-        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+        "/opt/ros/kinetic/lib/python2.7/dist-packages",
+        "/usr/local/lib/python2.7/site-packages",
+        "/usr/lib/x86_64-linux-gnu/python2.7/site-packages"
     ],
     "files.associations": {
         "*.cpp": "cpp",
@@ -63,7 +65,9 @@
         "queue": "cpp"
     },
     "python.analysis.extraPaths": [
-        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+        "/opt/ros/kinetic/lib/python2.7/dist-packages",
+        "/usr/local/lib/python2.7/site-packages",
+        "/usr/lib/x86_64-linux-gnu/python2.7/site-packages"
     ],
     "doxdocgen.file.copyrightTag": [
         "@copyright Copyright (c) {2021}  合肥工业大学-LASIS-何冠男"

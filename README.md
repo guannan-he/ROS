@@ -168,9 +168,18 @@ sudo apt-get install ros-kinetic-joystick-drivers
 ```
 roslaunch lasis_launch spawn_racecar.launch
 ```
+racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘速度指令  
+通过命名空间和[nodelet](https://github.com/guannan-he/ROS#7-nodelet)划分为上下两个层级，描述文件位于[mux.launch](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/launch/mux.launch)  
+上层控处理不同优先级的导航控制命令并发送给下层  
+下层按照`遥控`、`安全`、`导航`顺序处理底盘控制指令  
+上层输出到下层的导航控制指令通过`relay`进行连接  
+`ackermann_cmd_mux`模块允许自定义**不同优先级**的**同数据类型**话题  
+上层优先级定义文件为[high_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/high_level_mux.yaml)  
+下层优先级定义文件为[low_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/low_level_mux.yaml)  
 
-
-正在实现
+![ackermann_cmd_mux](images/lasis_autonomous_vehicle/racecar/ackermann_cmd_mux_structure.png)
+  
+**待续**
 
 ## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
 
@@ -213,4 +222,5 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 [carrot planner](http://wiki.ros.org/navigation/Tutorials/Writing%20A%20Global%20Path%20Planner%20As%20Plugin%20in%20ROS)  
 [aStar planner& dijkstra planner](https://zhuanlan.zhihu.com/p/113662488)  
 [NavFnROS中势能计算](https://github.com/locusrobotics/robot_navigation/tree/master/dlux_global_planner#the-kernel)   
-[AMZ-driverless](https://github.com/AMZ-Driverless/fssim)
+[AMZ-driverless](https://github.com/AMZ-Driverless/fssim)  
+[MIT-RACECAR](https://github.com/mit-racecar)
