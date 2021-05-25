@@ -177,7 +177,8 @@ racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘
 上层优先级定义文件为[high_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/high_level_mux.yaml)  
 下层优先级定义文件为[low_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/low_level_mux.yaml)  
 
-![ackermann_cmd_mux](images/lasis_autonomous_vehicle/racecar/ackermann_cmd_mux_structure.png)
+![ackermann_cmd_mux](images/lasis_autonomous_vehicle/racecar/ackermann_cmd_mux_structure.png)  
+图片来源：[mit-racecar.github.io](https://mit-racecar.github.io/icra2019-workshop/lab-wall-follow-hardware)
   
 **待续**
 
@@ -223,4 +224,6 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 [aStar planner& dijkstra planner](https://zhuanlan.zhihu.com/p/113662488)  
 [NavFnROS中势能计算](https://github.com/locusrobotics/robot_navigation/tree/master/dlux_global_planner#the-kernel)   
 [AMZ-driverless](https://github.com/AMZ-Driverless/fssim)  
-[MIT-RACECAR](https://github.com/mit-racecar)
+[MIT-RACECAR](https://github.com/mit-racecar)  
+[MIT racecar 2016 team 5 project blog](6.141-spring-2016-team-5-documentation)  
+[MIT ICRA'19 tutorial](https://mit-racecar.github.io/icra2019-workshop/)
