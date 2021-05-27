@@ -4,7 +4,7 @@
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find racecar_control)/config/racecar_control.yaml" command="load"/>
-
+  <arg name = "use_amcl" default = "false"/>
   <!-- load the controllers -->
   <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false"
         output="screen" ns="/racecar" args="left_rear_wheel_velocity_controller right_rear_wheel_velocity_controller
@@ -16,13 +16,31 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
     <remap from="/joint_states" to="/racecar/joint_states" />
   </node>
-
-  <!-- servo node -->
   <node pkg="racecar_control" type="servo_commands.py" name="servo_commands" output="screen">
     <remap from="/racecar/ackermann_cmd_mux/output" to="/vesc/low_level/ackermann_cmd_mux/output"/>
   </node>
+  <!-- servo node -->
+  
 
-  <!-- Allow for Gazebo to broadcast odom -->
-  <node pkg="racecar_gazebo" name="gazebo_odometry_node" type="gazebo_odometry.py"/>
+  <!-- 不使用amcl时直接用gazebo发布odom -->
+  <group unless = "$(arg use_amcl)">
+    <node pkg="racecar_gazebo" name="gazebo_odometry_node" type="gazebo_odometry.py"/>
+  </group>
+  <!-- 使用 amcl 定位时底盘控制器更换为 ackermann 并由该控制器发布odom -->
+  <group if = "$(arg use_amcl)">
+    <node pkg="racecar_gazebo" name="gazebo_map_odom" type="gazebo_map_odom.py"/>
+    <!-- <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+      <param name="output_frame" value="odom"/>
+      <param name="freq" value="30.0"/>
+      <param name="sensor_timeout" value="1.0"/>
+      <param name="odom_used" value="true"/>
+      <param name="imu_used" value="false"/>
+      <param name="vo_used" value="false"/>
+      <param name="debug" value="false"/>
+      <param name="self_diagnose" value="false"/>
+      <param name="frame_id" value="base_link" />
+      <remap from =  "odom" to = "/pf/pose/odom"/>
+    </node> -->
+  </group>
 
 </launch>

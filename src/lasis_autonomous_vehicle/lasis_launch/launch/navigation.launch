@@ -1,0 +1,37 @@
+<launch>
+    <arg name = "world_path" default = "$(find lasis_launch)/worlds" />
+    <arg name = "world_name" default = "racecar_runway" />
+    <arg name = "use_amcl" default = "false"/>
+    <arg name = "map_name" default = "map_with_cone"/>
+    <arg name = "x_pos" default = "-5.388334"/>
+    <arg name = "y_pos" default = "-4.094883"/>
+    <!-- 生成世界及小车 -->
+    <include file = "$(find lasis_launch)/launch/spawn_racecar.launch">
+        <arg name = "world_name" value = "$(arg world_name)" />
+        <arg name = "world_path" value = "$(arg world_path)" />
+        <arg name = "use_amcl" value = "$(arg use_amcl)"/>
+        <arg name = "gui" value = "false" />
+        <arg name = "x_pos" value = "$(arg x_pos)"/>
+        <arg name = "y_pos" value = "$(arg y_pos)"/>
+    </include>
+    <!-- 地图服务器 -->
+    <node name = "map_server" pkg = "map_server" type = "map_server" args = "$(find lasis_launch)/map/$(arg map_name).yaml" />
+    <!-- amcl 节点 -->
+    <group if = "$(arg use_amcl)">
+        <include file = "$(find lasis_launch)/launch/amcl.launch">
+            <arg name = "initial_pose_x" value = "$(arg x_pos)"/>
+            <arg name = "initial_pose_y" value = "$(arg y_pos)"/>
+            <arg name = "initial_pose_a" value = "0.0"/>
+            <arg name = "use_map_topic"  value = "true"/>
+        </include>
+    </group>
+    <!-- move_base 节点 -->
+
+    <!-- rviz 窗口 -->
+    <node
+        pkg = "rviz"
+        type = "rviz"
+        name = "rviz_window"
+        args = "-d $(find lasis_launch)/rviz/gmapping.rviz"
+    />
+</launch>

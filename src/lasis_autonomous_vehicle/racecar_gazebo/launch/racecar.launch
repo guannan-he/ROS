@@ -1,15 +1,17 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="world_name" default="racecar" />
+  <arg name = "world_path" default = "$(find racecar_gazebo)/worlds" />
+  <arg name = "world_name" default = "racecar" />
   <arg name="gui" default="true" />
   <arg name="run_camera" default="false"/>
+  <arg name = "use_amcl" default = "false"/>
 
   <arg name="x_pos" default="-5.388334"/>
   <arg name="y_pos" default="-4.094883"/>
   <arg name="z_pos" default="0.0"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find racecar_gazebo)/worlds/$(arg world_name).world"/>
+    <arg name="world_name" value="$(arg world_path)/$(arg world_name).world"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
@@ -20,7 +22,9 @@
   <node name="racecar_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model racecar -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)" />
 
   <!-- ros_control racecar launch file -->
-  <include file="$(find racecar_control)/launch/racecar_control.launch" ns="/"/>
+  <include file="$(find racecar_control)/launch/racecar_control.launch" ns="/">
+    <arg name = "use_amcl" value = "$(arg use_amcl)"/>
+  </include>
 
   <!-- Spawn the MUXs -->
   <arg name="racecar_version" default="racecar-v2" />

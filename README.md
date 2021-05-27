@@ -1,3 +1,16 @@
+# 软件环境  
+|  组件   | 版本  |  
+|  :----  | :----  |  
+| ubuntu  | 16.04 |  
+| kernel  | 4.15.0 |  
+| nvidia driver  | 430.64 |  
+| ROS  | kinetic |  
+| gazebo  | 7.16.1 |  
+| python2  | 2.7.12 |  
+| python3  | 3.5.2 |  
+| g++  | 5.4.0 |  
+
+   
 # ROS packages  
 ## 1. [topic 发送订阅](https://github.com/guannan-he/ROS/tree/main/src/topic_pub_sub)  
 
@@ -164,10 +177,26 @@ sudo apt-get install ros-kinetic-ackermann-*
 sudo apt-get install ros-kinetic-joystick-drivers
 ```
 
-输入如下命令测试是否安装成功
+启动命令1：带键盘控制的最小化系统（无amcl和move_base）
 ```
 roslaunch lasis_launch spawn_racecar.launch
 ```
+  
+启动命令2：在`启动命令1`的基础上使用gmapping算法建图，如需保存地图，加上`save_map_option:=true`参数  
+```
+roslaunch lasis_launch gmapping.launch
+```
+
+启动命令3：在`启动命令1`的基础上使用`move_base`节点进行规划，**`amcl`**暂时无法使用，由gazebo发布`odom`  
+```
+roslaunch lasis_launch navigation.launch
+```
+
+<!-- 启动命令4：  
+```
+nan
+``` -->
+
 racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘速度指令  
 通过命名空间和[nodelet](https://github.com/guannan-he/ROS#7-nodelet)划分为上下两个层级，描述文件位于[mux.launch](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/launch/mux.launch)  
 上层控处理不同优先级的导航控制命令并发送给下层  

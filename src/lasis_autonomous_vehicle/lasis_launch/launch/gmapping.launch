@@ -1,10 +1,26 @@
 <launch>
+    <!-- 全局参数 -->
+    <arg name = "world_path" default = "$(find lasis_launch)/worlds" />
+    <arg name = "world_name" default = "racecar_runway" />
+    <arg name = "save_map_option" default = "false"/>
+    <arg name = "map_save_file_name" default = "my_map"/>
+    <arg name = "x_pos" default = "-5.388334"/>
+    <arg name = "y_pos" default = "-4.094883"/>
+    <!-- gmapping 参数 -->
     <arg name = "map_update_interval" default = "0.5"/>
     <arg name = "linearUpdate" default = "0.2"/>
     <arg name = "angularUpdate" default = "0.1"/>
     <arg name = "temporalUpdate" default = "-1"/>
     <arg name = "lstep" default = "0.2"/>
     <arg name = "astep" default = "0.2"/>
+    <!-- 生成世界及小车 -->
+    <include file = "$(find lasis_launch)/launch/spawn_racecar.launch">
+        <arg name = "world_name" value = "$(arg world_name)" />
+        <arg name = "world_path" value = "$(arg world_path)" />
+        <arg name = "x_pos" value = "$(arg x_pos)"/>
+        <arg name = "y_pos" value = "$(arg y_pos)"/>
+    </include>
+    <!-- gmapping 节点及配置 -->
     <node pkg = "gmapping" type = "slam_gmapping" name = "slam_gmapping" output = "screen">
         <param name = "base_frame" value = "base_link"/> <!--机器人底盘坐标系基框架，附带在移动底盘的框架，原点-->
         <param name = "odom_frame" value = "odom"/> <!--里程计坐标系里程计框架，附带在里程计的框架-->
@@ -39,9 +55,23 @@
         <param name = "llsamplestep" value = "0.01"/>
         <param name = "lasamplerange" value = "0.005"/>
         <param name = "lasamplestep" value = "0.005"/>
-        <!--param name = "transform_publish_period" value = "0.01"/-->
-
     </node>
+    <!-- rviz 窗口 -->
+    <node
+        pkg = "rviz"
+        type = "rviz"
+        name = "rviz_window"
+        args = "-d $(find lasis_launch)/rviz/gmapping.rviz"
+    />
+    <!-- 地图保存 -->
+    <group if = "$(arg save_map_option)">
+        <node
+            pkg = "map_server"
+            type = "map_saver"
+            name = "map_save_node"
+            respawn = "true"
+            respawn_delay = "10"
+            args = "-f $(find lasis_launch)/map/$(arg map_save_file_name)"
+        />
+    </group>
 </launch>
-
-

@@ -13,6 +13,7 @@
 #include <fstream>
 #include <std_msgs/String.h>
 #include <pluginlib/class_list_macros.h>
+#include "yaml-cpp/yaml.h"
 
 #include "ackermann_cmd_mux/ackermann_cmd_mux_nodelet.hpp"
 #include "ackermann_cmd_mux/exceptions.hpp"
