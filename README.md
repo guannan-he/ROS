@@ -177,17 +177,19 @@ sudo apt-get install ros-kinetic-ackermann-*
 sudo apt-get install ros-kinetic-joystick-drivers
 ```
 
-启动命令1：带键盘控制的最小化系统（无amcl和move_base）
+**启动命令1**：带键盘控制的最小化系统（无amcl和move_base）
 ```
 roslaunch lasis_launch spawn_racecar.launch
 ```
   
-启动命令2：在`启动命令1`的基础上使用gmapping算法建图，如需保存地图，加上`save_map_option:=true`参数  
+**启动命令2**：在`启动命令1`的基础上使用gmapping算法建图  
+如需保存地图，需在命令行中添加`save_map_option:=true`参数  
 ```
 roslaunch lasis_launch gmapping.launch
 ```
 
-启动命令3：在`启动命令1`的基础上使用`move_base`节点进行规划，**`amcl`**暂时无法使用，由gazebo发布`odom`  
+**启动命令3**：在`启动命令1`的基础上使用`move_base`节点进行规划，使用`amcl`定位，`odom`由gazebo获取  
+如果要直接使用gazebo发布变换，需在命令行中添加`use_amcl:=false`参数
 ```
 roslaunch lasis_launch navigation.launch
 ```
@@ -197,6 +199,7 @@ roslaunch lasis_launch navigation.launch
 nan
 ``` -->
 
+### **ackermann_cmd_mux 详解**  
 racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘速度指令  
 通过命名空间和[nodelet](https://github.com/guannan-he/ROS#7-nodelet)划分为上下两个层级，描述文件位于[mux.launch](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/launch/mux.launch)  
 上层控处理不同优先级的导航控制命令并发送给下层  
@@ -209,7 +212,19 @@ racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘
 ![ackermann_cmd_mux](images/lasis_autonomous_vehicle/racecar/ackermann_cmd_mux_structure.png)  
 图片来源：[mit-racecar.github.io](https://mit-racecar.github.io/icra2019-workshop/lab-wall-follow-hardware)
   
-**待续**
+### **odom 与 amcl 详解**  
+`odom`指里程计，可以理解为由编码器、惯导、GNSS、视觉里程计等传感器发布的消息信息，经过航位推测法(Dead Reckoning)推算出的**车辆相对于出发点位置**，通常使用`robot_pose_ekf`节点对以上数据进行融合，然后发布以`/odom`为根节点，以`/base_link`为叶子节点的`TF`变换。  
+
+由于`odom`不可避免的存在漂移(Odometry Drift)，需要使用**车辆所在位置的局部信息**如雷达点云`/scan`等对该误差进行估计(校正)。`amcl`节点提供该算法，`amcl`指自适应蒙特卡洛定位，使用粒子滤波算法，**估计出车辆在地图中**最可能的位置，然后发布以`/map`为根节点，以`/odom`为叶子节点的`TF`变换，对误差进行校正。  
+
+![amcl-odom-base_link](images/lasis_autonomous_vehicle/racecar/amcl_odom_base_link.png)
+
+图片来源：[answers.ros.org](https://answers.ros.org/question/300999/confused-with-amcl-map-to-odom-transform/)  
+
+启动命令3提供两种定位方法，gazebo定位与amcl定位，其`TF`树差异如下  
+![tf_tree](images/lasis_autonomous_vehicle/racecar/amcl.png)
+
+**待续**  
 
 ## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
 
@@ -255,4 +270,7 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 [AMZ-driverless](https://github.com/AMZ-Driverless/fssim)  
 [MIT-RACECAR](https://github.com/mit-racecar)  
 [MIT racecar 2016 team 5 project blog](6.141-spring-2016-team-5-documentation)  
-[MIT ICRA'19 tutorial](https://mit-racecar.github.io/icra2019-workshop/)
+[MIT ICRA'19 tutorial](https://mit-racecar.github.io/icra2019-workshop/)  
+[Publishing Odometry Information over ROS
+](http://wiki.ros.org/navigation/Tutorials/RobotSetup/Odom)  
+[amcl详解-csdn](https://blog.csdn.net/chenxingwangzi/article/details/50038413)
