@@ -2,6 +2,7 @@
     <arg name = "world_path" default = "$(find lasis_launch)/worlds" />
     <arg name = "world_name" default = "racecar_runway" />
     <arg name = "use_amcl" default = "true"/>
+    <arg name = "use_cmd_vel" default = "true"/>
     <arg name = "map_name" default = "map_with_cone"/>
     <arg name = "x_pos" default = "-5.388334"/>
     <arg name = "y_pos" default = "-4.094883"/>
@@ -31,15 +32,20 @@
         <arg name = "base_global_planner" value = "navfn/NavfnROS"/>
         <arg name = "base_local_planner" value = "teb_local_planner/TebLocalPlannerROS"/>
     </include>
-    <!-- 轨迹转化为ackermann命令 -->
-    <!-- <node pkg = "racecar_gazebo" type = "path_pursuit" name = "path_to_ackermann" respawn = "true" respawn_delay = "5">
-        <remap from = "/move_base/TebLocalPlannerROS/global_plan" to = "/move_base/TebLocalPlannerROS/global_plan"/>
-        <remap from = "/vesc/low_level/ackermann_cmd_mux/input/navigation" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
-    </node> -->
-    <!-- <node pkg = "lasis_launch" type = "path_pure_pursuit" name = "path_pure_pursuit_node" respawn = "true" respawn_delay = "5">
-        <remap from = "local_plan_input" to = "/move_base/TebLocalPlannerROS/local_plan"/>
-        <remap from = "ackermann_commond_output" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
-    </node> -->
+    <!-- 轨迹转化为 ackermann 命令 -->
+    <group unless = "$(arg use_cmd_vel)">
+        <node pkg = "lasis_launch" type = "path_pure_pursuit" name = "path_pure_pursuit_node" respawn = "true" respawn_delay = "5">
+            <remap from = "local_plan_input" to = "/move_base/TebLocalPlannerROS/local_plan"/>
+            <remap from = "ackermann_commond_output" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
+        </node>
+    </group>
+    <!-- 使用 cmd_vel 到 ackermann 节点 -->
+    <group if = "$(arg use_cmd_vel)">
+        <node pkg = "teb_local_planner" type = "cmd_vel_to_ackermann_drive.py" name = "twist_to_ackermann">
+            <remap from = "/cmd_vel" to = "/cmd_vel"/>
+            <remap from = "/ackermann_cmd" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
+        </node>
+    </group>
     <!-- rviz 窗口 -->
     <node
         pkg = "rviz"
