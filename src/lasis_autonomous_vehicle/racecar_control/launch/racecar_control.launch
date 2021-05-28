@@ -26,7 +26,7 @@
   <group unless = "$(arg use_amcl)">
     <node pkg="racecar_gazebo" name="gazebo_odometry_node" type="gazebo_odometry.py"/>
   </group>
-  <!-- 使用 amcl 定位时底盘控制器更换为 ackermann 并由该控制器发布odom -->
+  <!-- 使用 amcl 定位 -->
   <group if = "$(arg use_amcl)">
     <node pkg="racecar_gazebo" name="gazebo_map_odom" type="gazebo_map_odom.py"/>
     <!-- <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">

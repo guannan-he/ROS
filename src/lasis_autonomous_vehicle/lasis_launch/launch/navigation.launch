@@ -26,7 +26,20 @@
         </include>
     </group>
     <!-- move_base 节点 -->
-
+    <param name = "/use_sim_time" value = "true"/>
+    <include file = "$(find lasis_launch)/include/move_base.launch">
+        <arg name = "base_global_planner" value = "navfn/NavfnROS"/>
+        <arg name = "base_local_planner" value = "teb_local_planner/TebLocalPlannerROS"/>
+    </include>
+    <!-- 轨迹转化为ackermann命令 -->
+    <!-- <node pkg = "racecar_gazebo" type = "path_pursuit" name = "path_to_ackermann" respawn = "true" respawn_delay = "5">
+        <remap from = "/move_base/TebLocalPlannerROS/global_plan" to = "/move_base/TebLocalPlannerROS/global_plan"/>
+        <remap from = "/vesc/low_level/ackermann_cmd_mux/input/navigation" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
+    </node> -->
+    <!-- <node pkg = "lasis_launch" type = "path_pure_pursuit" name = "path_pure_pursuit_node" respawn = "true" respawn_delay = "5">
+        <remap from = "local_plan_input" to = "/move_base/TebLocalPlannerROS/local_plan"/>
+        <remap from = "ackermann_commond_output" to = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"/>
+    </node> -->
     <!-- rviz 窗口 -->
     <node
         pkg = "rviz"

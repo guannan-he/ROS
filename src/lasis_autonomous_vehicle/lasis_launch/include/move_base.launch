@@ -1,0 +1,22 @@
+<launch>
+    <arg name="base_global_planner" default="navfn/NavfnROS"/>
+    <arg name="base_local_planner" default="teb_local_planner/TebLocalPlannerROS"/>
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <!-- costmap 参数配置 -->
+        <rosparam file="$(find racecar_gazebo)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find racecar_gazebo)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find racecar_gazebo)/config/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find racecar_gazebo)/config/global_costmap_params.yaml" command="load" />
+        <!-- 全局路径规划器 -->
+        <param name="base_global_planner" value="$(arg base_global_planner)"/>
+        <param name="planner_frequency" value="0.01" />
+        <param name="planner_patience" value="5.0" />
+        <!-- 局部路径规划器 -->
+        <param name="base_local_planner" value="$(arg base_local_planner)"/>
+        <rosparam file="$(find racecar_gazebo)/config/teb_local_planner_params.yaml" command="load" />
+        <param name="controller_frequency" value="5.0" />
+        <param name="controller_patience" value="15.0" />
+
+        <param name="clearing_rotation_allowed" value="false" />
+    </node>
+</launch>

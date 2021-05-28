@@ -188,11 +188,16 @@ roslaunch lasis_launch spawn_racecar.launch
 roslaunch lasis_launch gmapping.launch
 ```
 
+![lasis_vehicle_navigation](images/lasis_autonomous_vehicle/gmapping.png)
+
 **启动命令3**：在`启动命令1`的基础上使用`move_base`节点进行规划，使用`amcl`定位，`odom`由gazebo获取  
-如果要直接使用gazebo发布变换，需在命令行中添加`use_amcl:=false`参数
+如果要直接使用gazebo发布变换，需在命令行中添加`use_amcl:=false`参数  
+**目前缺少从`nav_msgs::path`到`ackermann_msgs`的节点，正在编写**
 ```
 roslaunch lasis_launch navigation.launch
 ```
+
+![lasis_vehicle_navigation](images/lasis_autonomous_vehicle/lasis_vehicle_navigation.png)
 
 <!-- 启动命令4：  
 ```
