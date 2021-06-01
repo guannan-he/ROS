@@ -1,4 +1,4 @@
-image: /home/lasis/catkin_ws/src/lasis_autonomous_vehicle/lasis_launch/map/map_with_cone.pgm
+image: map_with_cone.pgm
 resolution: 0.050000
 origin: [-50.000000, -50.000000, 0.000000]
 negate: 0

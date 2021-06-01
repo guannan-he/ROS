@@ -1,7 +1,8 @@
 {
     "python.autoComplete.extraPaths": [
-        "/opt/ros/kinetic/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages",
         "/usr/local/lib/python2.7/site-packages",
+        "/usr/local/lib/python3.6/dist-packages",
         "/usr/lib/x86_64-linux-gnu/python2.7/site-packages"
     ],
     "files.associations": {
@@ -65,8 +66,9 @@
         "queue": "cpp"
     },
     "python.analysis.extraPaths": [
-        "/opt/ros/kinetic/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages",
         "/usr/local/lib/python2.7/site-packages",
+        "/usr/local/lib/python3.6/dist-packages",
         "/usr/lib/x86_64-linux-gnu/python2.7/site-packages"
     ],
     "doxdocgen.file.copyrightTag": [

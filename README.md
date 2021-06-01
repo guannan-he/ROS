@@ -1,15 +1,22 @@
 # 软件环境  
 |  组件   | 版本  |  
 |  :----  | :----  |  
-| ubuntu  | 16.04 |  
-| kernel  | 4.15.0 |  
-| nvidia driver  | 430.64 |  
-| ROS  | kinetic |  
-| gazebo  | 7.16.1 |  
-| python2  | 2.7.12 |  
-| python3  | 3.5.2 |  
-| g++  | 5.4.0 |  
+| ubuntu  | 18.04.5 |  
+| kernel  | 5.4.0 |  
+| nvidia driver  | 460.73.01 |  
+|  opencv | 3.2.0 |  
+| ROS  | melodic |  
+| gazebo  | 9.0.0 |  
+| python2  | 2.7.17 |  
+| python3  | 3.6.9 |  
+| g++  | 7.5.0 |  
+----
 
+使用如下命令安装所需依赖
+```
+rosdep install --from-paths src --ignore-src -r -y
+```
+如果遇到gazebo黑屏,参考: [gazebo打不开world的通用解决方法](https://blog.csdn.net/qq_37427972/article/details/82853655)
    
 # ROS packages  
 ## 1. [topic 发送订阅](https://github.com/guannan-he/ROS/tree/main/src/topic_pub_sub)  
@@ -162,19 +169,19 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 ![image](images/my_nodelet_learning/nodes.png)  
 ## 8. [lasis_vehicle](https://github.com/guannan-he/ROS/tree/main/src/lasis_autonomous_vehicle)  
 使用经过[北京邮电大学](https://github.com/xmy0916/racecar)修改过的[MIT模型](https://github.com/mit-racecar)  
-需要安装如下依赖  
+需要安装如下依赖(**如果已经使用过本文件开头的命令，可忽略**)    
 
 ```
-sudo apt-get install ros-kinetic-controller-manager
-sudo apt-get install ros-kinetic-gazebo-ros-control
-sudo apt-get install ros-kinetic-effort-controllers
-sudo apt-get install ros-kinetic-joint-state-controller
-sudo apt-get install ros-kinetic-driver-base
-sudo apt-get install ros-kinetic-rtabmap-ros
-sudo apt-get install ros-kinetic-teb-local-planner
-sudo apt-get install ros-kinetic-vesc*
-sudo apt-get install ros-kinetic-ackermann-*
-sudo apt-get install ros-kinetic-joystick-drivers
+sudo apt-get install ros-melodic-controller-manager
+sudo apt-get install ros-melodic-gazebo-ros-control
+sudo apt-get install ros-melodic-effort-controllers
+sudo apt-get install ros-melodic-joint-state-controller
+sudo apt-get install ros-melodic-driver-base
+sudo apt-get install ros-melodic-rtabmap-ros
+sudo apt-get install ros-melodic-teb-local-planner
+sudo apt-get install ros-melodic-vesc*
+sudo apt-get install ros-melodic-ackermann-*
+sudo apt-get install ros-melodic-joystick-drivers
 ```
 
 **启动命令1**：带键盘控制的最小化系统（无amcl和move_base）
@@ -269,7 +276,8 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 1) myRosDijkstra  
 ![image](images/my_global_planner_plugin/myRosDijkstra.png)  
 
-
+# 更新日志
+- 20210601 迁移到 ROS melodic 发行版
     
 # References  
 [pluginlib_tutorials](https://github.com/huchunxu/ros_blog_sources/tree/master/pluginlib_tutorials)  

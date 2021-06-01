@@ -57,6 +57,9 @@
   <build_depend>pluginlib</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>tf</build_depend>
+  <build_depend>carrot_planner</build_depend>
+  <build_depend>move_base_msgs</build_depend>
+  <build_depend>move_base</build_depend>
   <build_export_depend>angles</build_export_depend>
   <build_export_depend>base_local_planner</build_export_depend>
   <build_export_depend>costmap_2d</build_export_depend>
@@ -65,6 +68,9 @@
   <build_export_depend>pluginlib</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>tf</build_export_depend>
+  <build_export_depend>carrot_planner</build_export_depend>
+  <build_export_depend>move_base_msgs</build_export_depend>
+  <build_export_depend>move_base</build_export_depend>
   <exec_depend>angles</exec_depend>
   <exec_depend>base_local_planner</exec_depend>
   <exec_depend>costmap_2d</exec_depend>
@@ -73,6 +79,9 @@
   <exec_depend>pluginlib</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>tf</exec_depend>
+  <exec_depend>carrot_planner</exec_depend>
+  <exec_depend>move_base_msgs</exec_depend>
+  <exec_depend>move_base</exec_depend>
 
 
 

@@ -6,7 +6,7 @@
         "limitSymbolsToIncludedHeaders": true
       },
       "includePath": [
-        "/opt/ros/kinetic/include/**",
+        "/opt/ros/melodic/include/**",
         "/usr/include/**",
         "${workspaceFolder}/devel/include/**",
         "${workspaceFolder}/**"
