@@ -1,0 +1,25 @@
+<launch>
+    <arg name = "world_path" default = "$(find lasis_launch)/worlds" />
+    <arg name = "world_name" default = "racecar_runway" />
+    <arg name = "use_amcl" default = "false"/>
+    <arg name = "use_cmd_vel" default = "true"/>
+    <arg name = "map_name" default = "map_with_cone"/>
+    <arg name = "x_pos" default = "-5.388334"/>
+    <arg name = "y_pos" default = "-4.094883"/>
+    <arg name = "rviz_file" default = "planner_debug.rviz"/>
+    <include file = "$(find lasis_launch)/launch/navigation.launch">
+        <arg name = "world_path" value = "$(arg world_path)" />
+        <arg name = "world_name" value = "$(arg world_name)" />
+        <arg name = "use_amcl" value = "$(arg use_amcl)"/>
+        <arg name = "use_cmd_vel" value = "$(arg use_cmd_vel)"/>
+        <arg name = "map_name" value = "$(arg map_name)"/>
+        <arg name = "x_pos" value = "$(arg x_pos)"/>
+        <arg name = "y_pos" value = "$(arg y_pos)"/>
+        <arg name = "rviz_file" default = "$(arg rviz_file)"/>
+    </include>
+    <node
+        pkg = "my_global_planner_plugin"
+        type = "click_point_make_plan"
+        name = "click_point_debug"
+    />
+</launch>

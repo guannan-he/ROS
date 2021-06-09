@@ -6,6 +6,7 @@
     <arg name = "map_name" default = "map_with_cone"/>
     <arg name = "x_pos" default = "-5.388334"/>
     <arg name = "y_pos" default = "-4.094883"/>
+    <arg name = "rviz_file" default = "navigation.rviz"/>
     <!-- 生成世界及小车 -->
     <include file = "$(find lasis_launch)/launch/spawn_racecar.launch">
         <arg name = "world_name" value = "$(arg world_name)" />
@@ -51,6 +52,6 @@
         pkg = "rviz"
         type = "rviz"
         name = "rviz_window"
-        args = "-d $(find lasis_launch)/rviz/navigation.rviz"
+        args = "-d $(find lasis_launch)/rviz/$(arg rviz_file)"
     />
 </launch>

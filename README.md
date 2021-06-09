@@ -19,9 +19,14 @@ rosdep install --from-paths src --ignore-src -r -y
 如果遇到gazebo黑屏,参考: [gazebo打不开world的通用解决方法](https://blog.csdn.net/qq_37427972/article/details/82853655)
    
 # ROS packages  
+
 ## 1. [topic 发送订阅](https://github.com/guannan-he/ROS/tree/main/src/topic_pub_sub)  
 
-my_talker_node 通过三个话题向 my_listener_node 发送两种消息  
+`ROS` 话题发布与订阅机示例
+
+<details>
+
+`my_talker_node` 通过三个话题向 `my_listener_node` 发送两种消息  
 
 **运行命令**  
 
@@ -31,9 +36,15 @@ roslaunch topic_pub_sub topic_pub_sub.launch
 
 ![image](images/topic_pub_sub/nodes.png)  
 
+</details>
+
 ## 2. [service 客户端、服务器](https://github.com/guannan-he/ROS/tree/main/src/service_req_rep)   
 
-my_client_node 向 my_server_node 发送服务请求，my_server_node 视数据有效性决定是否拒绝服务  
+`ROS` 服务请求与应答示例
+
+<details>
+
+`my_client_node` 向 `my_server_node` 发送服务请求，`my_server_node` 视数据有效性决定是否拒绝服务  
 
 **运行命令**  
 
@@ -43,9 +54,15 @@ roslaunch service_req_rep service_req_rep.launch
 
 ![image](images/service_req_rep/nodes.png)  
 
+</details>
+
 ## 3. [param 服务器](https://github.com/guannan-he/ROS/tree/main/src/param_dynamic_set)  
 
-dynamic_configure_node 收到参数变化请求后调用 myParamDynamicSetCallServer 提供的服务  
+`ROS` 参数服务器示例，与服务订阅联合示例  
+
+<details>
+
+`dynamic_configure_node` 收到参数变化请求后调用 `myParamDynamicSetCallServer` 提供的服务  
 
 **运行命令**  
 
@@ -55,7 +72,13 @@ roslaunch param_dynamic_set param_dynamic_set.launch
 
 ![image](images/param_dynamic_set/nodes.png)  
 
+</details>
+
 ## 4. [小乌龟TF](https://github.com/guannan-he/ROS/tree/main/src/learning_tf)  
+
+`TF` 订阅、发布示例
+
+<details>
 
 通过键盘控制乌龟1位置，乌龟2订阅TF树上`乌龟1上参考点`相对于`乌龟2`的变换，乌龟2跟踪该变换并设法使变换归零。跟踪目标可以通过`start_demo.launch`修改  
 
@@ -67,9 +90,15 @@ roslaunch learning_tf start_demo.launch
 
 ![image](images/learning_tf/nodes.png)  
 
+</details>
+
 ## 5. [动作服务器](https://github.com/guannan-he/ROS/tree/main/src/action_server_client)  
 
-randNumGen 生成随机数发布到 randomNumber 话题，avgActionClient 设定目标并接受 avgActionServer 提供的反馈  
+简单动作服务器示例  
+
+<details>
+
+`randNumGen` 生成随机数发布到 `randomNumber` 话题，`avgActionClient` 设定目标并接受 avgActionServer 提供的反馈  
 
 **运行命令**  
 
@@ -79,7 +108,13 @@ roslaunch action_server_client server_and_client_avg.launch
 
 ![image](images/action_server_client/nodes.png)  
 
+</details>
+
 ## 6. [pluginlib](https://github.com/guannan-he/ROS/tree/main/src/my_pluginlib_learning)  
+
+`ROS` 插件编写、注册机制示例与教程  
+
+<details>
 
 pluginlib 利用面向对象编程的继承概念，在`基类`中定义方法，在`继承类`中实现  
 推荐使用`公有继承`  
@@ -127,9 +162,16 @@ roslaunch my_pluginlib_learning plugin_param_demo.launch
     
 8) 在源文件中使用`基类`生成`继承类`实例，查看[plugin_caller.cpp](https://github.com/guannan-he/ROS/blob/main/src/my_pluginlib_learning/src/plugin_caller.cpp)查看具体使用方式，生成`继承类`既可以使用`插件描述.xml`中定义的名字，也可以使用`继承类`名称  
 
+</details>
+
 ## 7. [nodelet](https://github.com/guannan-he/ROS/tree/main/src/my_nodelet_learning)  
-string_publisher 节点发布消息到 input 话题  
-nodelet_manager_1 下注册 subPubInstance1 、subPubInstance2 和 myNodeLetxx  
+
+`pluginlib` 的一种使用方式： `nodelet`  
+
+<details>
+
+`string_publisher` 节点发布消息到 `input` 话题  
+`nodelet_manager_1` 下注册 `subPubInstance1` 、`subPubInstance2` 和 `myNodeLetxx`  
 节点管理器下挂节点通过管理器对外订阅或发布话题  
 
 **运行命令**  
@@ -167,7 +209,16 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 
 
 ![image](images/my_nodelet_learning/nodes.png)  
+
+</details>
+
 ## 8. [lasis_vehicle](https://github.com/guannan-he/ROS/tree/main/src/lasis_autonomous_vehicle)  
+
+轨迹规划算法开发仿真包，提供全剧规划与局部规划两种接口。  
+与 `my_global_planner_plugin` 与  `my_local_planner_plugin` 配合使用  
+
+<details>
+
 使用经过[北京邮电大学](https://github.com/xmy0916/racecar)修改过的[MIT模型](https://github.com/mit-racecar)  
 需要安装如下依赖(**如果已经使用过本文件开头的命令，可忽略**)    
 
@@ -244,7 +295,13 @@ nan
 
 **待续**  
 
+</details>
+
 ## 9. [my_global_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_global_planner_plugin)  
+
+全局轨迹规划算法开发工具包，提供测试工具、 `rviz` 接口、几种规划算法对比
+
+<details>
 
 提供下列节点供测试
 
@@ -275,9 +332,37 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 
 1) myRosDijkstra  
 ![image](images/my_global_planner_plugin/myRosDijkstra.png)  
+  
+</details>
+
+## 10. [my_local_planner_plugin](https://github.com/guannan-he/ROS/tree/main/src/my_local_planner_plugin)  
+
+局部轨迹规划算法开发工具包，提供测试工具、 `rviz` 接口、几种规划算法对比
+
+<details>
+
+TODO  
+
+![local planning process](images/my_local_planner_plugin/process.png)  
+图片来源：[CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830)  
+
+</details>
+
+---
 
 # 更新日志
-- 20210601 迁移到 ROS melodic 发行版
+- 20210416 `TF` 变换学习
+- 20210420 `actionlib` 动作服务器学习
+- 20210421 动态参数调节学习，使用类进行参数服务器与服务段封装
+- 20210424 `pluginlib` 插件类加载方法学习
+- 20210426 `nodelet` 学习
+- 20210513 添加 `my_global_planner_plugin` 局部路径规划插件
+- 20210519 仿照`navfn`优化`dijkstra`算法，并使用`wrapper`包装新增调试节点
+- 20210524 在`lasis_car`中使用`racecar`模型
+- 20210527 `amcl`上线
+- 20210528 新增`move_base`节点，`navigation`基础功能完成
+- 20210601 迁移到 `ROS melodic` 发行版
+- 20210608 添加 `my_local_planner_plugin` 局部路径规划插件
     
 # References  
 [pluginlib_tutorials](https://github.com/huchunxu/ros_blog_sources/tree/master/pluginlib_tutorials)  
@@ -292,4 +377,7 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 [MIT ICRA'19 tutorial](https://mit-racecar.github.io/icra2019-workshop/)  
 [Publishing Odometry Information over ROS
 ](http://wiki.ros.org/navigation/Tutorials/RobotSetup/Odom)  
-[amcl详解-csdn](https://blog.csdn.net/chenxingwangzi/article/details/50038413)
+[amcl详解-csdn](https://blog.csdn.net/chenxingwangzi/article/details/50038413)  
+[Base Local Planner 源码解读-1](https://blog.csdn.net/Neo11111/article/details/104660830)  
+[Base Local Planner 源码解读-2](https://blog.csdn.net/Neo11111/article/details/104713086)  
+[Base Local Planner 源码解读-3](https://blog.csdn.net/Neo11111/article/details/104720103)  
