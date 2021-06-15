@@ -217,7 +217,7 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 轨迹规划算法开发仿真包，提供全剧规划与局部规划两种接口。  
 与 `my_global_planner_plugin` 与  `my_local_planner_plugin` 配合使用  
 
-<details>
+<details open>
 
 使用经过[北京邮电大学](https://github.com/xmy0916/racecar)修改过的[MIT模型](https://github.com/mit-racecar)  
 需要安装如下依赖(**如果已经使用过本文件开头的命令，可忽略**)    
@@ -301,8 +301,9 @@ nan
 
 全局轨迹规划算法开发工具包，提供测试工具、 `rviz` 接口、几种规划算法对比
 
-<details>
+<details open>
 
+需要与 `move_base` , `TF` 配合使用， `lasis_vehicle` 已包含当前包功能  
 提供下列节点供测试
 
 1) `click_point_make_plan` 使用 rviz 中发布点功能，调用`make_plan()`函数并发布路径  
@@ -339,7 +340,7 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 
 局部轨迹规划算法开发工具包，提供测试工具、 `rviz` 接口、几种规划算法对比
 
-<details>
+<details open>
 
 TODO  
 
@@ -362,7 +363,10 @@ TODO
 - 20210527 `amcl`上线
 - 20210528 新增`move_base`节点，`navigation`基础功能完成
 - 20210601 迁移到 `ROS melodic` 发行版
-- 20210608 添加 `my_local_planner_plugin` 局部路径规划插件
+- 20210615 添加 `my_local_planner_plugin` 局部路径规划插件
+
+# 已知问题
+- 抄来的 `base_local_planner` 原地打方向，待修复
     
 # References  
 [pluginlib_tutorials](https://github.com/huchunxu/ros_blog_sources/tree/master/pluginlib_tutorials)  

@@ -31,7 +31,7 @@
     <param name = "/use_sim_time" value = "true"/>
     <include file = "$(find lasis_launch)/include/move_base.launch">
         <arg name = "base_global_planner" value = "navfn/NavfnROS"/>
-        <arg name = "base_local_planner" value = "teb_local_planner/TebLocalPlannerROS"/>
+        <arg name = "base_local_planner" value = "base_local_planner/myBaseLocalPlannerROS"/>
     </include>
     <!-- 轨迹转化为 ackermann 命令 -->
     <group unless = "$(arg use_cmd_vel)">

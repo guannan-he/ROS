@@ -7,7 +7,7 @@
         pkg = "map_server"
         type = "map_server"
         name = "static_map_provider"
-        args = "$(find provide_map)/include/map/$(arg map_name).yaml"
+        args = "$(find my_global_planner_plugin)/map/$(arg map_name).yaml"
         output = "screen"
     />
     <node

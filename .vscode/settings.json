@@ -63,7 +63,15 @@
         "typeinfo": "cpp",
         "string": "cpp",
         "mutex": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "condition_variable": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "string_view": "cpp"
     },
     "python.analysis.extraPaths": [
         "/opt/ros/melodic/lib/python2.7/dist-packages",
@@ -104,7 +112,7 @@
         "param",
         "return"
     ],
-    "doxdocgen.generic.paramTemplate": "@param{indent:8}{param}{indent:25}paramname",
+    "doxdocgen.generic.paramTemplate": "@param{indent:8}{param}{indent:40}paramname",
     "doxdocgen.generic.returnTemplate": "@return {type} ",
     "doxdocgen.generic.splitCasingSmartText": true,
 }

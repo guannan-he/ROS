@@ -1,0 +1,5 @@
+<library path = "libmy_local_planner_plugin">
+    <class name = "base_local_planner/myBaseLocalPlannerROS" type = "base_local_planner::myBaseLocalPlannerROS" base_class_type = "nav_core::BaseLocalPlanner">
+        <description>myBaseLocalPlannerROS</description>
+    </class>
+</library>
