@@ -16,6 +16,8 @@
 #ifndef _MY_BASE_LOCAL_PLANNER_
 #define _MY_BASE_LOCAL_PLANNER_
 
+// #define PANNER_DEBUG_MODE
+
 #include <vector>
 #include <cmath>
 
@@ -697,7 +699,7 @@ namespace base_local_planner{
         Trajectory t;
         double impossible_cost = path_map_.obstacleCosts();
         generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_lim_x_, acc_lim_y_, acc_lim_theta_, impossible_cost, t);
-        return t.cost_;
+        return double( t.cost_ );
     }
     bool my_local_planner_kernel::scoreTrajectory(geometry_msgs::Pose pos, geometry_msgs::Twist vel, double vx_samp, double vy_samp, double vtheta_samp){
         return scoreTrajectory(pos.position.x, pos.position.y, tf2::getYaw(pos.orientation), vel.linear.x, vel.linear.y, vel.angular.z, vx_samp, vy_samp, vtheta_samp);
@@ -765,7 +767,7 @@ namespace base_local_planner{
     }
     void my_local_planner_kernel::updatePlan(const std::vector<geometry_msgs::PoseStamped>& new_plan, bool compute_dists){
         global_plan_.resize(new_plan.size());
-        for (int i = new_plan.size() - 1; i > -1; i--){
+        for (unsigned int i = 0; i < new_plan.size(); ++i){
             global_plan_[i] = new_plan[i];
         }
         if (global_plan_.size() > 0){
@@ -798,9 +800,11 @@ namespace base_local_planner{
         int num_steps;
         if(!heading_scoring_) {
             num_steps = int(std::max((vmag * sim_time_) / sim_granularity_, fabs(vtheta_samp) / angular_sim_granularity_) + 0.5);
-        } else {
+        }
+        else {
             num_steps = int(sim_time_ / sim_granularity_ + 0.5);
         }
+
         if(num_steps == 0) {
             num_steps = 1;
         }
@@ -831,7 +835,7 @@ namespace base_local_planner{
             // 计算代价
             occ_cost = std::max(std::max(occ_cost, footprint_cost), double(costmap_.getCost(cell_x, cell_y))); // 路径上最大的cost
             if (simple_attractor_){
-                goal_dist = std::pow((final_goal_x_ - x_i), 2) + std::pow((final_goal_y_ - y_i), 2);
+                goal_dist = std::pow((final_goal_x_ - x_i), 2.0) + std::pow((final_goal_y_ - y_i), 2.0);
             }
             else{
                 // 计算三个代价
@@ -868,20 +872,27 @@ namespace base_local_planner{
         }
         double cost = -1.0;
 
-        cost = path_dist * path_distance_bias_ + goal_dist * goal_distance_bias_ + occ_cost * occdist_scale_ + 0.3 * heading_diff;
+        // cost = path_dist * path_distance_bias_ + goal_dist * goal_distance_bias_ + occ_cost * occdist_scale_ + 0.3 * heading_diff;
+        if (!heading_scoring_) {
+            cost = path_distance_bias_ * path_dist + goal_dist * goal_distance_bias_ + occdist_scale_ * occ_cost;
+        }
+        else {
+            cost = occdist_scale_ * occ_cost + path_distance_bias_ * path_dist + 0.3 * heading_diff + goal_dist * goal_distance_bias_;
+        }
         traj.cost_ = cost;
+#ifdef PANNER_DEBUG_MODE
+        ROS_INFO("cost: %f, x: %f, y: %f, yaw: %f.", cost, vx_samp, vy_samp, vtheta_samp);
+#endif
         return;
     }
     Trajectory my_local_planner_kernel::findBestPath(const geometry_msgs::PoseStamped& global_pose, geometry_msgs::PoseStamped& global_vel, geometry_msgs::PoseStamped& drive_velocities){
         Eigen::Vector3f pos(global_pose.pose.position.x, global_pose.pose.position.y, tf2::getYaw(global_pose.pose.orientation));
         Eigen::Vector3f vel(global_vel.pose.position.x, global_vel.pose.position.y, tf2::getYaw(global_vel.pose.orientation));
-
-        std::vector<base_local_planner::Position2DInt> footprint_list =
-        footprint_helper_.getFootprintCells(pos, footprint_spec_, costmap_, true);
-
         path_map_.resetPathDist();
         goal_map_.resetPathDist();
-        for (unsigned int i = footprint_list.size() - 1; i > -1; i--) {
+        std::vector<base_local_planner::Position2DInt> footprint_list = footprint_helper_.getFootprintCells(pos, footprint_spec_, costmap_, true);
+
+        for (unsigned int i = 0; i < footprint_list.size(); ++i) {
             path_map_(footprint_list[i].x, footprint_list[i].y).within_robot = true;
         }
         path_map_.setTargetCells(costmap_, global_plan_);
@@ -948,7 +959,7 @@ namespace base_local_planner{
             for (int i = 0; i < vx_samples_; i++){
                 vtheta_samp = 0;
                 generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
-                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj < 0)){
+                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj->cost_ < 0)){
                     swap = best_traj;
                     best_traj = comp_traj;
                     comp_traj = swap;
@@ -957,7 +968,7 @@ namespace base_local_planner{
                 vtheta_samp = min_vel_theta;
                 for (int j = 0; j < vtheta_samples_; j++){
                     generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
-                    if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj < 0)){
+                    if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj->cost_ < 0)){
                         swap = best_traj;
                         best_traj = comp_traj;
                         comp_traj = swap;
@@ -965,14 +976,17 @@ namespace base_local_planner{
                     }
                     vtheta_samp += dvtheta;
                 }
-                vx += dvx;
+                vx_samp += dvx;
             }
+#ifdef PANNER_DEBUG_MODE
+            ROS_INFO("-----------------end of normal--------------------");
+#endif
             if (holonomic_robot_){
                 vx_samp = 0.1;
                 vy_samp = 0.1;
                 vtheta_samp = 0.0;
                 generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
-                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj < 0)){
+                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj->cost_ < 0)){
                     swap = best_traj;
                     best_traj = comp_traj;
                     comp_traj = swap;
@@ -982,7 +996,7 @@ namespace base_local_planner{
                 vy_samp = -0.1;
                 vtheta_samp = 0.0;
                 generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
-                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj < 0)){
+                if (comp_traj->cost_ >= 0 && (comp_traj->cost_ < best_traj->cost_ || best_traj->cost_ < 0)){
                     swap = best_traj;
                     best_traj = comp_traj;
                     comp_traj = swap;
@@ -998,9 +1012,9 @@ namespace base_local_planner{
 
         for (int i = 0; i < vtheta_samples_; i++){
             double vtheta_samp_limited = vtheta_samp > 0 ? std::max(vtheta_samp, min_in_place_vel_th_): std::min(vtheta_samp, -1.0 * min_in_place_vel_th_);
-            generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
-            if (comp_traj->cost_ > 0 
-                && (comp_traj->cost_ < best_traj->cost_ || best_traj < 0 || best_traj->yv_ != 0.0)
+            generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp_limited, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
+            if (comp_traj->cost_ >= 0
+                && (comp_traj->cost_ <= best_traj->cost_ || best_traj->cost_ < 0 || best_traj->yv_ != 0.0)
                 && (vtheta_samp > dvtheta || vtheta_samp < -1 * dvtheta)){
                 double x_r, y_r, th_r;
                 comp_traj->getEndpoint(x_r, y_r, th_r);
@@ -1031,6 +1045,9 @@ namespace base_local_planner{
             }
             vtheta_samp += dvtheta;
         }
+#ifdef PANNER_DEBUG_MODE
+            ROS_INFO("-----------------end of rotate--------------------");
+#endif
         // 如果找到合法轨迹
         if (best_traj->cost_ >= 0){
             // 防止原地前后震荡和旋转震荡
@@ -1077,13 +1094,16 @@ namespace base_local_planner{
             if(dist > escape_reset_dist_ || fabs(angles::shortest_angular_distance(escape_theta_, theta)) > escape_reset_theta_){// 逃逸重置
                 escaping_ = false;
             }
+#ifdef PANNER_DEBUG_MODE
+            ROS_INFO("-----------------found--------------------");
+#endif
             return *best_traj;
         }
         // 还没找到的话如果是全约束机器人，找横向运动方法
         if (holonomic_robot_){
             vtheta_samp = min_vel_theta;
             vx_samp = 0.0;
-            for (int i = y_vels_.size() - 1; i > -1; i--){
+            for (unsigned int i = 0; i < y_vels_.size(); ++i){
                 vtheta_samp = 0;
                 vy_samp = y_vels_[i];
                 generateTrajectory(x, y, theta, vx, vy, vtheta, vx_samp, vy_samp, vtheta_samp, acc_x, acc_y, acc_theta, impossible_cost, *comp_traj);
@@ -1199,6 +1219,9 @@ namespace base_local_planner{
         if(best_traj->cost_ == -1.0){
             best_traj->cost_ = 1.0;
         }
+#ifdef PANNER_DEBUG_MODE
+            ROS_INFO("-----------------back--------------------");
+#endif
         return *best_traj;
     }
 };

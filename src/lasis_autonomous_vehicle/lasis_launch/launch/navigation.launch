@@ -6,7 +6,11 @@
     <arg name = "map_name" default = "map_with_cone"/>
     <arg name = "x_pos" default = "-5.388334"/>
     <arg name = "y_pos" default = "-4.094883"/>
+    <ard name = "local_planner" default = "teb_local_planner/TebLocalPlannerROS"/>
+    <!-- <ard name = "local_planner" default = "base_local_planner/myBaseLocalPlannerROS"/> -->
     <arg name = "rviz_file" default = "navigation.rviz"/>
+    <!-- <arg name = "rviz_file" default = "navigation_debug.rviz"/> -->
+
     <!-- 生成世界及小车 -->
     <include file = "$(find lasis_launch)/launch/spawn_racecar.launch">
         <arg name = "world_name" value = "$(arg world_name)" />
@@ -31,7 +35,8 @@
     <param name = "/use_sim_time" value = "true"/>
     <include file = "$(find lasis_launch)/include/move_base.launch">
         <arg name = "base_global_planner" value = "navfn/NavfnROS"/>
-        <arg name = "base_local_planner" value = "base_local_planner/myBaseLocalPlannerROS"/>
+        <arg name = "base_local_planner" value = "$(arg local_planner)"/>
+        <!-- <arg name = "base_local_planner" value = "base_local_planner/myBaseLocalPlannerROS"/> -->
     </include>
     <!-- 轨迹转化为 ackermann 命令 -->
     <group unless = "$(arg use_cmd_vel)">
