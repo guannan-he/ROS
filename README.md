@@ -383,10 +383,10 @@ virtual void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costm
 图片来源：[CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830)  
 
 **局部轨迹规划效果对比**  
-1) `base_local_planner/TrajectoryPlannerROS` 效果欠佳
-![local planning process](images/my_local_planner_plugin/base_local_planner.png)
-2) `teb_local_planner/TebLocalPlannerROS` 使用底盘运动学限制，效果良好 
-![local planning process](images/my_local_planner_plugin/tebLocalPlanner.png)
+1) `base_local_planner/TrajectoryPlannerROS` 效果欠佳  
+![local planning process](images/my_local_planner_plugin/base_local_planner.png)  
+2) `teb_local_planner/TebLocalPlannerROS` 使用底盘运动学限制，效果良好  
+![local planning process](images/my_local_planner_plugin/tebLocalPlanner.png)  
 
 </details>
 
