@@ -18,5 +18,6 @@
         <param name="controller_patience" value="15.0" />
 
         <param name="clearing_rotation_allowed" value="false" />
+        <param name="recovery_behavior_enabled" value="false" />
     </node>
 </launch>

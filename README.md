@@ -1,15 +1,12 @@
 # 软件环境  
-|  组件   | 版本  |  
-|  :----  | :----  |  
-| ubuntu  | 18.04.5 |  
-| kernel  | 5.4.0 |  
-| nvidia driver  | 460.73.01 |  
-|  opencv | 3.2.0 |  
+|  组件   | 版本  |   组件   | 版本  |  
+|  :----  | :----  |   :----  | :----  |  
+| ubuntu  | 18.04.5 |  gazebo  | 9.0.0 |  
+| kernel  | 5.4.0 |  python2  | 2.7.17 | 
+| nvidia driver  | 460.73.01 |  python3  | 3.6.9 | 
+|  opencv | 3.2.0 |  g++  | 7.5.0 |  
 | ROS  | melodic |  
-| gazebo  | 9.0.0 |  
-| python2  | 2.7.17 |  
-| python3  | 3.6.9 |  
-| g++  | 7.5.0 |  
+
 ----
 
 使用如下命令安装所需依赖
@@ -24,7 +21,7 @@ rosdep install --from-paths src --ignore-src -r -y
 
 `ROS` 话题发布与订阅机示例
 
-<details>
+<details open>
 
 `my_talker_node` 通过三个话题向 `my_listener_node` 发送两种消息  
 
@@ -34,15 +31,18 @@ rosdep install --from-paths src --ignore-src -r -y
 roslaunch topic_pub_sub topic_pub_sub.launch
 ```  
 
+<center>
+
 ![image](images/topic_pub_sub/nodes.png)  
 
+</center>
 </details>
 
 ## 2. [service 客户端、服务器](https://github.com/guannan-he/ROS/tree/main/src/service_req_rep)   
 
 `ROS` 服务请求与应答示例
 
-<details>
+<details open>
 
 `my_client_node` 向 `my_server_node` 发送服务请求, `my_server_node` 视数据有效性决定是否拒绝服务  
 
@@ -51,8 +51,11 @@ roslaunch topic_pub_sub topic_pub_sub.launch
 ```
 roslaunch service_req_rep service_req_rep.launch
 ```  
+<center>
 
 ![image](images/service_req_rep/nodes.png)  
+
+</center>
 
 </details>
 
@@ -60,7 +63,7 @@ roslaunch service_req_rep service_req_rep.launch
 
 `ROS` 参数服务器示例, 与服务订阅联合示例  
 
-<details>
+<details open>
 
 `dynamic_configure_node` 收到参数变化请求后调用 `myParamDynamicSetCallServer` 提供的服务  
 
@@ -69,8 +72,11 @@ roslaunch service_req_rep service_req_rep.launch
 ```
 roslaunch param_dynamic_set param_dynamic_set.launch
 ```  
+<center>
 
 ![image](images/param_dynamic_set/nodes.png)  
+
+</center>
 
 </details>
 
@@ -78,7 +84,7 @@ roslaunch param_dynamic_set param_dynamic_set.launch
 
 `TF` 订阅、发布示例
 
-<details>
+<details open>
 
 通过键盘控制乌龟1位置, 乌龟2订阅TF树上`乌龟1上参考点`相对于`乌龟2`的变换, 乌龟2跟踪该变换并设法使变换归零. 跟踪目标可以通过`start_demo.launch`修改  
 
@@ -87,8 +93,11 @@ roslaunch param_dynamic_set param_dynamic_set.launch
 ```
 roslaunch learning_tf start_demo.launch
 ```  
+<center>
 
 ![image](images/learning_tf/nodes.png)  
+
+</center>
 
 </details>
 
@@ -96,7 +105,7 @@ roslaunch learning_tf start_demo.launch
 
 简单动作服务器示例  
 
-<details>
+<details open>
 
 `randNumGen` 生成随机数发布到 `randomNumber` 话题, `avgActionClient` 设定目标并接受 avgActionServer 提供的反馈  
 
@@ -105,8 +114,11 @@ roslaunch learning_tf start_demo.launch
 ```
 roslaunch action_server_client server_and_client_avg.launch
 ```  
+<center>
 
 ![image](images/action_server_client/nodes.png)  
+
+</center>
 
 </details>
 
@@ -114,7 +126,7 @@ roslaunch action_server_client server_and_client_avg.launch
 
 `ROS` 插件编写、注册机制示例与教程  
 
-<details>
+<details open>
 
 pluginlib 利用面向对象编程的继承概念, 在`基类`中定义方法, 在`继承类`中实现  
 推荐使用`公有继承`  
@@ -168,7 +180,7 @@ roslaunch my_pluginlib_learning plugin_param_demo.launch
 
 `pluginlib` 的一种使用方式： `nodelet`  
 
-<details>
+<details open>
 
 `string_publisher` 节点发布消息到 `input` 话题  
 `nodelet_manager_1` 下注册 `subPubInstance1` 、`subPubInstance2` 和 `myNodeLetxx`  
@@ -207,8 +219,11 @@ roslaunch my_nodelet_learning my_nodelet_launch.launch
 3) 管理器下挂所有节点均通过节点管理器与外界交流  
 4) nodelet **可能**支持服务, 但并**未**进行尝试
 
+<center>
 
 ![image](images/my_nodelet_learning/nodes.png)  
+
+</center>
 
 </details>
 
@@ -248,7 +263,11 @@ roslaunch lasis_launch spawn_racecar.launch
 roslaunch lasis_launch gmapping.launch
 ```
 
+<center>
+
 ![lasis_vehicle_navigation](images/lasis_autonomous_vehicle/gmapping.png)
+
+</center>
 
 **启动命令3**：在`启动命令1`的基础上使用`move_base`节点进行规划, 使用`amcl`定位, `odom`由gazebo获取  
 > 如果要直接使用gazebo发布变换, 需在命令行中添加`use_amcl:=false`参数  
@@ -259,13 +278,11 @@ roslaunch lasis_launch gmapping.launch
 ```
 roslaunch lasis_launch navigation.launch
 ```
+<center>
 
 ![lasis_vehicle_navigation](images/lasis_autonomous_vehicle/lasis_vehicle_navigation.png)
 
-<!-- 启动命令4：  
-```
-nan
-``` -->
+</center>
 
 ### **ackermann_cmd_mux 详解**  
 > racecar中`ackermann_cmd_mux`模块负责处理不同优先级的阿克曼底盘速度指令  
@@ -278,20 +295,32 @@ nan
 上层优先级定义文件为[high_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/high_level_mux.yaml)  
 下层优先级定义文件为[low_level_mux.yaml](https://github.com/guannan-he/ROS/blob/main/src/lasis_autonomous_vehicle/racecar/config/racecar-v2/low_level_mux.yaml)  
 
+<center>
+
 ![ackermann_cmd_mux](images/lasis_autonomous_vehicle/racecar/ackermann_cmd_mux_structure.png)  
 图片来源：[mit-racecar.github.io](https://mit-racecar.github.io/icra2019-workshop/lab-wall-follow-hardware)
+
+</center>
   
 ### **odom 与 amcl 详解**  
 > `odom`指里程计, 可以理解为由编码器、惯导、GNSS、视觉里程计等传感器发布的消息信息, 经过航位推测法(Dead Reckoning)推算出的**车辆相对于出发点位置**, 通常使用`robot_pose_ekf`节点对以上数据进行融合, 然后发布以`/odom`为根节点, 以`/base_link`为叶子节点的`TF`变换.  
 
 > 由于`odom`不可避免的存在漂移(Odometry Drift), 需要使用**车辆所在位置的局部信息**如雷达点云`/scan`等对该误差进行估计(校正).`amcl`节点提供该算法, `amcl`指自适应蒙特卡洛定位, 使用粒子滤波算法, **估计出车辆在地图中**最可能的位置, 然后发布以`/map`为根节点, 以`/odom`为叶子节点的`TF`变换, 对误差进行校正.  
 
+<center>
+
 ![amcl-odom-base_link](images/lasis_autonomous_vehicle/racecar/amcl_odom_base_link.png)
 
 图片来源：[answers.ros.org](https://answers.ros.org/question/300999/confused-with-amcl-map-to-odom-transform/)  
 
+</center>
+
 启动命令3提供两种定位方法, gazebo定位与amcl定位, 其`TF`树差异如下  
+<center>
+
 ![tf_tree](images/lasis_autonomous_vehicle/racecar/amcl.png)
+
+</center>
 
 **待续**  
 
@@ -322,17 +351,37 @@ nan
 roslaunch my_global_planner_plugin kernelDebug.launch
 ```  
 **结果**  
-1) `myCarrot`  
+1) `myCarrot` 
+
+<center>
+ 
 ![image](images/my_global_planner_plugin/myCarrot.png)  
 
-1) `myAStar`  
+</center>
+
+2) `myAStar`  
+
+<center>
+
 ![image](images/my_global_planner_plugin/myAStar.png)  
 
-1) `myDijkstra`  
+</center>
+
+3) `myDijkstra`  
+
+<center>
+
 ![image](images/my_global_planner_plugin/myDijkstra.png)  
 
-1) `myRosDijkstra`  
+</center>
+
+4) `myRosDijkstra`  
+
+<center>
+
 ![image](images/my_global_planner_plugin/myRosDijkstra.png)  
+
+</center>
   
 </details>
 
@@ -376,17 +425,41 @@ virtual void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costm
 2) 当全局路径规划结果发生变化时, `move_base` 调用 `TrajectoryPlannerROS::setPlan` 对追踪目标进行更新, `TrajectoryPlannerROS` 储存全局路径规划并将当前状态设置为**未到达终点** 
 3) `move_base` 节点**周期调用** `TrajectoryPlannerROS::computeVelocityCommands` 和 `TrajectoryPlannerROS::isGoalReached` 计算底盘控制指令并检查是否完成追踪
 4) 在 `TrajectoryPlannerROS::computeVelocityCommands` 中, `TrajectoryPlannerROS` 将全局路径规划变换到局部代价图上并对规划进行裁减, 然后根据底盘是否在运动、距离终点距离、决定轨迹生成方式并生成底盘控制指令, 轨迹生成算法核心函数为 `TrajectoryPlanner::generateTrajectory` , 详细参考[Base Local Planner 源码解读-1](https://blog.csdn.net/Neo11111/article/details/104660830)  
-5) `TrajectoryPlanner::createTrajectories` 在控制空间中采样并调用轨迹生成函数, `TrajectoryPlanner::generateTrajectory` 对机器人在采样控制量下运动轨迹进行仿真并评分, 详细参考[Base Local Planner 源码解读-2](https://blog.csdn.net/Neo11111/article/details/104713086)
+5) `TrajectoryPlanner::createTrajectories` 在控制空间中采样并调用轨迹生成函数, `TrajectoryPlanner::generateTrajectory` 对机器人在采样控制量下运动轨迹进行仿真并评分, 详细参考[Base Local Planner 源码解读-2](https://blog.csdn.net/Neo11111/article/details/104713086)  
 
+<center>
 
 ![local planning process](images/my_local_planner_plugin/process.png)  
 图片来源：[CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830)  
 
+</center>
+
+move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控制差分底盘的 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html), 而不是阿克曼底盘控制指令 [`ackermann_msgs/AckermannDriveStamped`](http://docs.ros.org/en/api/ackermann_msgs/html/msg/AckermannDriveStamped.html). 但因前者具有六自由度而后者仅具有二自由度, 因此 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html) 仍可用于阿克曼底盘. `teb_local_planner` 通过添加 最小转弯半径约束解决该两种底盘运动方式不同的问题：  
+
+<center>
+
+![eq](https://latex.codecogs.com/svg.latex?\frac{\omega}{v}>{r_{min}})
+
+</center>  
+
+注意: 使用 `teb_local_planner` 时推荐**关闭** `move_base` 节点的 `escape` 功能! 
+
 **局部轨迹规划效果对比**  
 1) `base_local_planner/TrajectoryPlannerROS` 效果欠佳  
-![local planning process](images/my_local_planner_plugin/base_local_planner.png)  
-2) `teb_local_planner/TebLocalPlannerROS` 使用底盘运动学限制，效果良好  
-![local planning process](images/my_local_planner_plugin/tebLocalPlanner.png)  
+
+<center>
+
+![base_planner](images/my_local_planner_plugin/base_local_planner.png)  
+
+</center>
+
+2) `teb_local_planner/TebLocalPlannerROS` 使用底盘运动学限制，效果良好 
+
+<center>
+ 
+![teb_planner](images/my_local_planner_plugin/tebLocalPlanner.png)  
+
+</center>
 
 </details>
 
