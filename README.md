@@ -458,8 +458,8 @@ move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控�
 
 <center>
 
-![流程]()  
-图片来源：[CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830)  
+![流程](images/my_teb_planner/g2o.jpeg)  
+图片来源：[腾讯云 小白学视觉](https://cloud.tencent.com/developer/article/1439125)  
 
 </center>
 
