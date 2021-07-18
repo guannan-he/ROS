@@ -1,14 +1,16 @@
 <launch>
     <arg name = "world_path" default = "$(find lasis_launch)/worlds" />
     <arg name = "world_name" default = "racecar_runway" />
-    <arg name = "use_amcl" default = "true"/>
+    <arg name = "use_amcl" default = "false"/>
     <arg name = "use_cmd_vel" default = "true"/>
     <arg name = "map_name" default = "map_with_cone"/>
     <arg name = "x_pos" default = "-5.388334"/>
     <arg name = "y_pos" default = "-4.094883"/>
     <arg name = "rviz_file" default = "navigation.rviz"/>
-    <arg name="base_global_planner" default="navfn/NavfnROS"/>
-    <arg name="base_local_planner" default="teb_local_planner/TebLocalPlannerROS"/>
+    <arg name = "base_global_planner" default = "navfn/NavfnROS"/>
+    <arg name = "base_local_planner" default = "teb_local_planner/TebLocalPlannerROS"/>
+    <arg name = "show_vel_profile" default = "false"/>
+    <arg name = "show_phase_portrait" default = "false"/>
 
     <!-- <arg name="base_local_planner" default="base_local_planner/myBaseLocalPlannerROS"/> -->
 
@@ -61,4 +63,17 @@
         name = "rviz_window"
         args = "-d $(find lasis_launch)/rviz/$(arg rviz_file)"
     />
+    <group if = "$(arg show_vel_profile)">
+        <node
+            pkg = "my_local_planner_plugin"
+            type = "visualize_velocity_profile.py"
+            name = "vel_profile_window"
+        />
+    </group>
+    <group if = "$(arg show_phase_portrait)">
+        <node pkg = "my_local_planner_plugin" type = "phase_portrait.py" name = "phase_portrait_window">
+            <remap from = "/vesc/odom" to = "/vesc/odom"/>
+            <remap from = "/amcl_pose" to = "/amcl_pose"/>
+        </node>
+    </group>
 </launch>

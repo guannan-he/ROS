@@ -6,8 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Local Planner1/TebPoses1
-        - /Global Planner1/GlobalPath1/Status1
-        - /amcl poses1/Status1
       Splitter Ratio: 0.5033259391784668
     Tree Height: 530
   - Class: rviz/Selection
@@ -28,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: LaserScan
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -87,10 +85,7 @@ Visualization Manager:
           Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
           Name: TebMarker
           Namespaces:
-            InfeasibleRobotPoses: true
-            PointObstacles: true
-            RobotFootprintModel: true
-            TebContainer: true
+            {}
           Queue Size: 100
           Value: true
         - Alpha: 1
@@ -440,7 +435,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 1.7199037075042725
+      Distance: 15.166742324829102
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -479,4 +474,4 @@ Window Geometry:
     collapsed: false
   Width: 1310
   X: 581
-  Y: 22
+  Y: 0

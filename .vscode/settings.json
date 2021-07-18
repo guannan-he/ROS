@@ -115,4 +115,5 @@
     "doxdocgen.generic.paramTemplate": "@param{indent:8}{param}{indent:40}paramname",
     "doxdocgen.generic.returnTemplate": "@return {type} ",
     "doxdocgen.generic.splitCasingSmartText": true,
+    "python.pythonPath": "/usr/bin/python",
 }

@@ -36,6 +36,7 @@ roslaunch topic_pub_sub topic_pub_sub.launch
 ![image](images/topic_pub_sub/nodes.png)  
 
 </center>
+
 </details>
 
 ## 2. [service 客户端、服务器](https://github.com/guannan-he/ROS/tree/main/src/service_req_rep)   
@@ -51,6 +52,7 @@ roslaunch topic_pub_sub topic_pub_sub.launch
 ```
 roslaunch service_req_rep service_req_rep.launch
 ```  
+
 <center>
 
 ![image](images/service_req_rep/nodes.png)  
@@ -72,6 +74,7 @@ roslaunch service_req_rep service_req_rep.launch
 ```
 roslaunch param_dynamic_set param_dynamic_set.launch
 ```  
+
 <center>
 
 ![image](images/param_dynamic_set/nodes.png)  
@@ -93,6 +96,7 @@ roslaunch param_dynamic_set param_dynamic_set.launch
 ```
 roslaunch learning_tf start_demo.launch
 ```  
+
 <center>
 
 ![image](images/learning_tf/nodes.png)  
@@ -114,6 +118,7 @@ roslaunch learning_tf start_demo.launch
 ```
 roslaunch action_server_client server_and_client_avg.launch
 ```  
+
 <center>
 
 ![image](images/action_server_client/nodes.png)  
@@ -278,6 +283,7 @@ roslaunch lasis_launch gmapping.launch
 ```
 roslaunch lasis_launch navigation.launch
 ```
+
 <center>
 
 ![lasis_vehicle_navigation](images/lasis_autonomous_vehicle/lasis_vehicle_navigation.png)
@@ -391,8 +397,8 @@ roslaunch my_global_planner_plugin kernelDebug.launch
 
 提供下列局部轨迹规划器  
 
-1) `base_local_planner` 用于差分底盘  
-2) `TebLocalPlannerROS` 用于阿克曼底盘（待实现）
+1) `TrajectoryPlannerROS` 用于差分底盘, 控制空间采样仿真  
+2) `TebLocalPlannerROS` 用于阿克曼底盘, 优化方法
 
 **启动命令1**：`base_local_planner` 作为局部轨迹规划器
 ```
@@ -419,6 +425,8 @@ virtual bool setPlan(const std::vector<geometry_msgs::PoseStamped>& plan) = 0;
 virtual void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) = 0;
 ```
 
+### **`TrajectoryPlannerROS` 详解**  
+
 `ROS` 中差分机器人底盘默认局部路径规划器为 `base_local_planner/TrajectoryPlannerROS` , 主要算法为 `state lattice`: 在控制空间中采样控制量并对机器人在这组控制量下的轨迹进行仿真并评分, 找到代价最小的轨迹作为最优轨迹. 由算法核心与 ROS 包装层组成, 其工作流程图由 [CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830) 整理, 可归纳为： 
  
 1) `move_base` 节点使用 `pluginlib` 方式创建 `TrajectoryPlannerROS` 对象作为包装层, 在其构造函数中创建算法对象 `TrajectoryPlanner` , 调用接口为 `TrajectoryPlannerROS::initialize` 
@@ -434,7 +442,9 @@ virtual void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costm
 
 </center>
 
-move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控制差分底盘的 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html), 而不是阿克曼底盘控制指令 [`ackermann_msgs/AckermannDriveStamped`](http://docs.ros.org/en/api/ackermann_msgs/html/msg/AckermannDriveStamped.html). 但因前者具有六自由度而后者仅具有二自由度, 因此 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html) 仍可用于阿克曼底盘. `teb_local_planner` 通过添加 最小转弯半径约束解决该两种底盘运动方式不同的问题：  
+### **`TebLocalPlannerROS` 详解**  
+
+move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控制差分底盘的 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html), 而不是阿克曼底盘控制指令 [`ackermann_msgs/AckermannDriveStamped`](http://docs.ros.org/en/api/ackermann_msgs/html/msg/AckermannDriveStamped.html). 但因前者具有六自由度而后者仅具有二自由度, 因此 [`geometry_msgs/Twist`](http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html) 仍可用于阿克曼底盘. `TebLocalPlannerROS` 通过添加 最小转弯半径约束解决该两种底盘运动方式不同的问题：  
 
 <center>
 
@@ -442,9 +452,25 @@ move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控�
 
 </center>  
 
-注意: 使用 `teb_local_planner` 时推荐**关闭** `move_base` 节点的 `escape` 功能! 
+注意: 使用 `TebLocalPlannerROS` 时推荐**关闭** `move_base` 节点的 `escape` 功能! 
 
-**局部轨迹规划效果对比**  
+`TebLocalPlannerROS` 的主要方法是使用 `g2o` 优化 `TimedElasticBand` 对象
+
+<center>
+
+![流程]()  
+图片来源：[CSDN用户 BRAND-NEO](https://blog.csdn.net/Neo11111/article/details/104660830)  
+
+</center>
+
+<center>
+
+![g2o 架构](images/my_teb_planner/g2o_structure.jpg)  
+图片来源：[g2o学习笔记](https://www.jianshu.com/p/e16ffb5b265d)  
+
+</center>
+
+### **局部轨迹规划效果对比**  
 1) `base_local_planner/TrajectoryPlannerROS` 效果欠佳  
 
 <center>
@@ -503,4 +529,10 @@ move_base 节点并不是针对阿克曼底盘设计, 底盘控制指令为控�
 [Base Local Planner 源码解读-2](https://blog.csdn.net/Neo11111/article/details/104713086)  
 [Base Local Planner 源码解读-3](https://blog.csdn.net/Neo11111/article/details/104720103)  
 [ros-planning/navigation/base_local_planner](https://github.com/ros-planning/navigation/tree/melodic-devel/base_local_planner)  
-[rst-tu-dortmund/teb_local_planner](https://github.com/rst-tu-dortmund/teb_local_planner)
+[rst-tu-dortmund/teb_local_planner](https://github.com/rst-tu-dortmund/teb_local_planner)  
+[Trajectory modification considering dynamic constraints of autonomous robots](https://ieeexplore.ieee.org/document/6309484)  
+[Kinodynamic Trajectory Optimization and Control for Car-Like Robots](https://ieeexplore.ieee.org/document/8206458)  
+[g2o学习笔记](https://www.jianshu.com/p/e16ffb5b265d)  
+[graph slam tutorial : 从推导到应用1](https://heyijia.blog.csdn.net/article/details/47686523)  
+[graph slam tutorial : 从推导到应用2](https://heyijia.blog.csdn.net/article/details/47731631)  
+[graph slam tutorial : 从推导到应用3](https://heyijia.blog.csdn.net/article/details/47428553)  

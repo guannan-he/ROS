@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             // 在要debug的cmakelist里第三行插入
             // SET(CMAKE_BUILD_TYPE Debug)
             // 
